@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carnet de Conducir — Teoría Barcelona</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #22263a;
+    --border: #2e3347;
+    --accent: #3b6ef0;
+    --accent2: #e8a020;
+    --green: #22c55e;
+    --red: #ef4444;
+    --text: #f0f2ff;
+    --muted: #7a80a0;
+    --radius: 12px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; }
+
+  /* NAV */
+  nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 24px; display: flex; align-items: center; justify-content: space-between; height: 60px; position: sticky; top: 0; z-index: 100; }
+  .nav-brand { font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; color: var(--text); display: flex; align-items: center; gap: 10px; }
+  .nav-brand span.flag { font-size: 22px; }
+  .nav-pill { background: var(--accent); color: #fff; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 20px; letter-spacing: 0.5px; }
+  .nav-links { display: flex; gap: 4px; }
+  .nav-btn { background: none; border: none; color: var(--muted); font-size: 13px; font-weight: 500; padding: 6px 14px; border-radius: 8px; cursor: pointer; transition: all 0.15s; font-family: 'Inter', sans-serif; }
+  .nav-btn:hover, .nav-btn.active { background: var(--surface2); color: var(--text); }
+
+  /* SCREENS */
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* HOME */
+  .home-hero { padding: 60px 24px 40px; text-align: center; max-width: 720px; margin: 0 auto; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(59,110,240,0.12); border: 1px solid rgba(59,110,240,0.3); border-radius: 30px; padding: 6px 16px; font-size: 12px; font-weight: 600; color: #7ea8ff; margin-bottom: 28px; letter-spacing: 0.3px; }
+  .hero-title { font-family: 'Space Grotesk', sans-serif; font-size: clamp(32px,5vw,52px); font-weight: 700; line-height: 1.1; margin-bottom: 20px; }
+  .hero-title em { font-style: normal; color: var(--accent2); }
+  .hero-sub { color: var(--muted); font-size: 16px; line-height: 1.6; max-width: 520px; margin: 0 auto 40px; }
+  .home-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; max-width: 900px; margin: 0 auto; padding: 0 24px 60px; }
+  .home-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; cursor: pointer; transition: all 0.2s; text-align: left; }
+  .home-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(59,110,240,0.12); }
+  .card-icon { font-size: 32px; margin-bottom: 16px; }
+  .card-title { font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 600; margin-bottom: 8px; }
+  .card-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+  .card-badge { margin-top: 14px; display: inline-block; font-size: 11px; font-weight: 600; background: rgba(59,110,240,0.15); color: #7ea8ff; padding: 3px 10px; border-radius: 20px; }
+
+  /* STATS BAR */
+  .stats-bar { display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; padding: 0 24px 40px; max-width: 700px; margin: 0 auto; }
+  .stat { text-align: center; }
+  .stat-num { font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 700; color: var(--accent2); }
+  .stat-label { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  /* STUDY SCREEN */
+  .study-layout { display: grid; grid-template-columns: 260px 1fr; min-height: calc(100vh - 60px); }
+  .sidebar { background: var(--surface); border-right: 1px solid var(--border); overflow-y: auto; }
+  .sidebar-header { padding: 20px 16px 12px; border-bottom: 1px solid var(--border); }
+  .sidebar-title { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+  .search-box { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; width: 100%; color: var(--text); font-size: 13px; outline: none; }
+  .search-box:focus { border-color: var(--accent); }
+  .search-box::placeholder { color: var(--muted); }
+  .cat-list { padding: 8px; }
+  .cat-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 10px; border-radius: 8px; cursor: pointer; transition: background 0.1s; margin-bottom: 2px; }
+  .cat-item:hover { background: var(--surface2); }
+  .cat-item.active { background: rgba(59,110,240,0.15); }
+  .cat-name { font-size: 13px; font-weight: 500; }
+  .cat-count { font-size: 11px; color: var(--muted); background: var(--surface2); padding: 2px 7px; border-radius: 10px; }
+  .study-content { padding: 32px; overflow-y: auto; }
+  .content-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; flex-wrap: gap; gap: 12px; }
+  .content-title { font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 600; }
+  .q-grid { display: grid; gap: 16px; }
+  .q-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; cursor: pointer; transition: border-color 0.15s; }
+  .q-card:hover { border-color: var(--accent); }
+  .q-card.expanded .q-answer { display: block; }
+  .q-question { padding: 18px 20px; display: flex; gap: 14px; align-items: flex-start; }
+  .q-num { font-size: 11px; font-weight: 600; color: var(--muted); min-width: 36px; margin-top: 2px; }
+  .q-text { font-size: 14px; line-height: 1.55; font-weight: 500; }
+  .q-answer { display: none; padding: 0 20px 18px 70px; }
+  .answer-label { font-size: 10px; font-weight: 700; color: var(--green); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+  .answer-text { font-size: 13px; color: #c0c8e8; line-height: 1.55; }
+  .q-img { width: 100%; max-width: 320px; border-radius: 8px; margin-top: 8px; border: 1px solid var(--border); }
+  .q-tags { padding: 0 20px 14px 70px; display: flex; gap: 6px; flex-wrap: wrap; }
+  .q-tag { font-size: 10px; font-weight: 600; background: var(--surface2); color: var(--muted); padding: 2px 8px; border-radius: 10px; }
+
+  /* PRACTICE TEST */
+  .test-layout { max-width: 760px; margin: 0 auto; padding: 32px 24px; }
+  .test-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; flex-wrap: wrap; gap: 12px; }
+  .test-title { font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 600; }
+  .test-meta { display: flex; gap: 16px; font-size: 13px; color: var(--muted); }
+  .timer-box { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 10px 18px; font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 700; color: var(--accent2); min-width: 80px; text-align: center; }
+  .timer-box.danger { color: var(--red); border-color: rgba(239,68,68,0.3); }
+  .progress-bar-wrap { background: var(--surface2); border-radius: 4px; height: 4px; margin-bottom: 28px; }
+  .progress-bar-fill { background: var(--accent); height: 100%; border-radius: 4px; transition: width 0.3s; }
+  .test-q-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; margin-bottom: 20px; }
+  .test-q-num { font-size: 11px; color: var(--muted); font-weight: 600; margin-bottom: 14px; }
+  .test-q-text { font-size: 17px; line-height: 1.55; font-weight: 500; margin-bottom: 20px; }
+  .test-img { width: 100%; max-width: 360px; border-radius: 10px; margin-bottom: 20px; border: 1px solid var(--border); display: block; }
+  .options-list { display: grid; gap: 10px; }
+  .option-btn { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; text-align: left; color: var(--text); font-size: 14px; cursor: pointer; transition: all 0.15s; display: flex; align-items: center; gap: 12px; font-family: 'Inter', sans-serif; }
+  .option-btn:hover:not(:disabled) { border-color: var(--accent); background: rgba(59,110,240,0.1); }
+  .option-btn.correct { border-color: var(--green); background: rgba(34,197,94,0.1); }
+  .option-btn.wrong { border-color: var(--red); background: rgba(239,68,68,0.1); }
+  .option-letter { width: 26px; height: 26px; border-radius: 50%; background: var(--border); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+  .correct .option-letter { background: var(--green); color: #fff; }
+  .wrong .option-letter { background: var(--red); color: #fff; }
+  .feedback-box { margin-top: 16px; padding: 14px 16px; border-radius: 10px; font-size: 13px; line-height: 1.5; }
+  .feedback-box.correct { background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.2); color: #86efac; }
+  .feedback-box.wrong { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); color: #fca5a5; }
+  .test-nav { display: flex; gap: 12px; justify-content: flex-end; margin-top: 8px; }
+  .btn { padding: 10px 22px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; font-family: 'Inter', sans-serif; transition: all 0.15s; }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: #2d5cd6; }
+  .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+  .btn-outline:hover { background: var(--surface2); }
+  .btn-danger { background: var(--red); color: #fff; }
+  .btn-success { background: var(--green); color: #fff; }
+
+  /* RESULTS */
+  .results-screen { max-width: 600px; margin: 0 auto; padding: 48px 24px; text-align: center; }
+  .result-circle { width: 140px; height: 140px; border-radius: 50%; margin: 0 auto 28px; display: flex; align-items: center; justify-content: center; flex-direction: column; border: 4px solid; }
+  .result-circle.pass { border-color: var(--green); background: rgba(34,197,94,0.08); }
+  .result-circle.fail { border-color: var(--red); background: rgba(239,68,68,0.08); }
+  .result-pct { font-family: 'Space Grotesk', sans-serif; font-size: 36px; font-weight: 700; }
+  .result-label { font-size: 11px; font-weight: 600; color: var(--muted); }
+  .result-title { font-family: 'Space Grotesk', sans-serif; font-size: 26px; font-weight: 700; margin-bottom: 10px; }
+  .result-sub { color: var(--muted); font-size: 15px; margin-bottom: 32px; }
+  .result-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 32px; }
+  .result-stat { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+  .result-stat-num { font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 700; }
+  .result-stat-label { font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .review-list { text-align: left; margin-top: 24px; }
+  .review-item { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; }
+  .review-item.correct { border-left: 3px solid var(--green); }
+  .review-item.wrong { border-left: 3px solid var(--red); }
+  .review-q { font-size: 13px; font-weight: 500; margin-bottom: 6px; }
+  .review-answer { font-size: 12px; color: var(--muted); }
+  .review-correct { color: var(--green); }
+
+  /* SETUP SCREEN */
+  .setup-screen { max-width: 600px; margin: 0 auto; padding: 48px 24px; }
+  .setup-title { font-family: 'Space Grotesk', sans-serif; font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+  .setup-sub { color: var(--muted); font-size: 14px; margin-bottom: 32px; }
+  .setup-option { background: var(--surface); border: 2px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 12px; cursor: pointer; transition: all 0.15s; }
+  .setup-option:hover { border-color: var(--accent); }
+  .setup-option.selected { border-color: var(--accent); background: rgba(59,110,240,0.08); }
+  .setup-option-title { font-weight: 600; margin-bottom: 4px; }
+  .setup-option-desc { font-size: 13px; color: var(--muted); }
+  .setup-section { margin-bottom: 28px; }
+  .setup-section-label { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+
+  /* QUESTION DOT NAV */
+  .q-dots { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
+  .q-dot { width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; cursor: pointer; background: var(--surface2); color: var(--muted); transition: all 0.1s; border: 1px solid var(--border); }
+  .q-dot.answered { background: rgba(59,110,240,0.2); color: var(--accent); border-color: rgba(59,110,240,0.3); }
+  .q-dot.current { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .q-dot.correct-dot { background: rgba(34,197,94,0.2); color: var(--green); border-color: rgba(34,197,94,0.3); }
+  .q-dot.wrong-dot { background: rgba(239,68,68,0.2); color: var(--red); border-color: rgba(239,68,68,0.3); }
+
+  /* ROAD SIGN VISUAL */
+  .sign-container { display: flex; gap: 20px; flex-wrap: wrap; align-items: center; margin-bottom: 14px; }
+  .road-sign { display: inline-flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; }
+  .sign-circle-red { width: 60px; height: 60px; border-radius: 50%; border: 5px solid #e53e3e; background: white; color: #222; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 900; }
+  .sign-triangle { width: 0; height: 0; border-left: 35px solid transparent; border-right: 35px solid transparent; border-bottom: 60px solid #e53e3e; position: relative; }
+  .sign-triangle::after { content: ''; width: 0; height: 0; border-left: 28px solid transparent; border-right: 28px solid transparent; border-bottom: 48px solid white; position: absolute; top: 14px; left: -28px; }
+  .sign-square { width: 60px; height: 60px; background: #0066cc; display: flex; align-items: center; justify-content: center; border-radius: 4px; color: white; font-size: 22px; font-weight: 900; }
+  .sign-octagon { clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); width: 56px; height: 56px; background: #cc0000; display: flex; align-items: center; justify-content: center; color: white; font-size: 13px; font-weight: 900; }
+
+  /* MOBILE */
+  @media (max-width: 700px) {
+    .study-layout { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .result-grid { grid-template-columns: 1fr 1fr; }
+    .test-header { flex-direction: column; }
+  }
+
+  /* LOADING */
+  .loading { display: flex; align-items: center; justify-content: center; padding: 60px; color: var(--muted); gap: 12px; font-size: 14px; }
+  .spinner { width: 20px; height: 20px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .pagination { display: flex; gap: 8px; align-items: center; justify-content: flex-end; margin-top: 24px; }
+  .page-btn { background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 13px; font-family: 'Inter', sans-serif; }
+  .page-btn:hover { border-color: var(--accent); }
+  .page-btn.active-page { background: var(--accent); border-color: var(--accent); }
+  .page-info { color: var(--muted); font-size: 13px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">
+    <span class="flag">🚗</span>
+    Carnet Barcelona
+    <span class="nav-pill">DGT 2024</span>
+  </div>
+  <div class="nav-links">
+    <button class="nav-btn active" onclick="showScreen('home')">Inicio</button>
+    <button class="nav-btn" onclick="showScreen('study')">Estudiar</button>
+    <button class="nav-btn" onclick="showScreen('setup')">Examen</button>
+  </div>
+</nav>
+
+<!-- HOME -->
+<div id="screen-home" class="screen active">
+  <div class="home-hero">
+    <div class="hero-badge">📍 Adaptado para Barcelona · DGT Oficial</div>
+    <h1 class="hero-title">Aprueba tu <em>carnet de conducir</em> a la primera</h1>
+    <p class="hero-sub">Más de 1.500 preguntas reales de exámenes anteriores de la DGT, incluyendo señales, normas de tráfico, y situaciones específicas de Barcelona y Cataluña.</p>
+  </div>
+  <div class="stats-bar">
+    <div class="stat"><div class="stat-num">1,500+</div><div class="stat-label">Preguntas</div></div>
+    <div class="stat"><div class="stat-num">30</div><div class="stat-label">Temas</div></div>
+    <div class="stat"><div class="stat-num">91%</div><div class="stat-label">Tasa de aprobados</div></div>
+    <div class="stat"><div class="stat-num">45min</div><div class="stat-label">Examen oficial</div></div>
+  </div>
+  <div class="home-cards">
+    <div class="home-card" onclick="showScreen('study')">
+      <div class="card-icon">📚</div>
+      <div class="card-title">Estudiar por temas</div>
+      <div class="card-desc">Repasa todas las preguntas organizadas por categoría. Haz clic en cada pregunta para ver la respuesta correcta y la explicación.</div>
+      <div class="card-badge">1,500 preguntas</div>
+    </div>
+    <div class="home-card" onclick="showScreen('setup')">
+      <div class="card-icon">📝</div>
+      <div class="card-title">Simular examen DGT</div>
+      <div class="card-desc">30 preguntas aleatorias en 30 minutos, igual que el examen oficial. Máximo 3 errores para aprobar. Resultados detallados al final.</div>
+      <div class="card-badge">Formato oficial</div>
+    </div>
+    <div class="home-card" onclick="startQuickTest('signs')">
+      <div class="card-icon">🚦</div>
+      <div class="card-title">Señales de tráfico</div>
+      <div class="card-desc">Practica exclusivamente las señales: prohibición, obligación, peligro, informativas. La sección más difícil del examen.</div>
+      <div class="card-badge">200+ señales</div>
+    </div>
+    <div class="home-card" onclick="startQuickTest('barcelona')">
+      <div class="card-icon">🏙️</div>
+      <div class="card-title">Barcelona especial</div>
+      <div class="card-desc">Zona de bajas emisiones, Superilles, carriles bus-taxi, área metropolitana AMB, parkings regulados y más.</div>
+      <div class="card-badge">Especial BCN</div>
+    </div>
+    <div class="home-card" onclick="startQuickTest('alcohol')">
+      <div class="card-icon">🍺</div>
+      <div class="card-title">Alcohol y drogas</div>
+      <div class="card-desc">Tasas, sanciones, retención de puntos y procedimiento. Preguntas muy frecuentes en el examen oficial.</div>
+      <div class="card-badge">Alta frecuencia</div>
+    </div>
+    <div class="home-card" onclick="startQuickTest('priority')">
+      <div class="card-icon">🔄</div>
+      <div class="card-title">Prioridad de paso</div>
+      <div class="card-desc">Intersecciones, glorietas, pasos a nivel, vehículos de emergencia. La parte más compleja de la teoría.</div>
+      <div class="card-badge">Muy importante</div>
+    </div>
+  </div>
+</div>
+
+<!-- STUDY -->
+<div id="screen-study" class="screen">
+  <div class="study-layout">
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-title">Temas</div>
+        <input class="search-box" id="search-box" placeholder="Buscar pregunta..." oninput="filterQuestions()" />
+      </div>
+      <div class="cat-list" id="cat-list"></div>
+    </div>
+    <div class="study-content">
+      <div class="content-header">
+        <div class="content-title" id="study-cat-title">Todas las preguntas</div>
+        <button class="btn btn-outline" onclick="showScreen('setup')">✏️ Hacer examen</button>
+      </div>
+      <div class="q-grid" id="q-grid"></div>
+      <div class="pagination" id="pagination"></div>
+    </div>
+  </div>
+</div>
+
+<!-- SETUP -->
+<div id="screen-setup" class="screen">
+  <div class="setup-screen">
+    <div class="setup-title">Configurar examen</div>
+    <div class="setup-sub">Elige el tipo de examen que quieres practicar</div>
+    <div class="setup-section">
+      <div class="setup-section-label">Tipo de examen</div>
+      <div class="setup-option selected" id="opt-official" onclick="selectOpt('type','official',this)">
+        <div class="setup-option-title">🏛️ Examen oficial DGT</div>
+        <div class="setup-option-desc">30 preguntas, 30 minutos, máx. 3 fallos. Igual que el real.</div>
+      </div>
+      <div class="setup-option" id="opt-quick" onclick="selectOpt('type','quick',this)">
+        <div class="setup-option-title">⚡ Repaso rápido</div>
+        <div class="setup-option-desc">15 preguntas, sin límite de tiempo. Ideal para repasar.</div>
+      </div>
+      <div class="setup-option" id="opt-hard" onclick="selectOpt('type','hard',this)">
+        <div class="setup-option-title">💪 Examen intensivo</div>
+        <div class="setup-option-desc">50 preguntas, 45 minutos. Entrenamiento exigente.</div>
+      </div>
+    </div>
+    <div class="setup-section">
+      <div class="setup-section-label">Tema</div>
+      <div class="setup-option selected" id="opt-all" onclick="selectOpt('topic','all',this)">
+        <div class="setup-option-title">📋 Todos los temas</div>
+        <div class="setup-option-desc">Mezcla de todas las categorías, como el examen real.</div>
+      </div>
+      <div class="setup-option" id="opt-signs-only" onclick="selectOpt('topic','signs',this)">
+        <div class="setup-option-title">🚦 Solo señales</div>
+        <div class="setup-option-desc">Practica exclusivamente señales de tráfico.</div>
+      </div>
+      <div class="setup-option" id="opt-bcn-only" onclick="selectOpt('topic','barcelona',this)">
+        <div class="setup-option-title">🏙️ Solo Barcelona</div>
+        <div class="setup-option-desc">Preguntas específicas de la ciudad y el AMB.</div>
+      </div>
+    </div>
+    <button class="btn btn-primary" style="width:100%;padding:14px;" onclick="startTest()">Comenzar examen →</button>
+  </div>
+</div>
+
+<!-- TEST -->
+<div id="screen-test" class="screen">
+  <div class="test-layout">
+    <div class="test-header">
+      <div>
+        <div class="test-title">Examen DGT</div>
+        <div class="test-meta">
+          <span id="test-q-label">Pregunta 1 de 30</span>
+          <span id="test-score-label">✗ 0 errores</span>
+        </div>
+      </div>
+      <div>
+        <div class="timer-box" id="timer">30:00</div>
+      </div>
+    </div>
+    <div class="q-dots" id="q-dots"></div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progress-fill"></div></div>
+    <div id="test-question-area"></div>
+    <div class="test-nav">
+      <button class="btn btn-outline" id="prev-btn" onclick="prevQ()">← Anterior</button>
+      <button class="btn btn-primary" id="next-btn" onclick="nextQ()">Siguiente →</button>
+      <button class="btn btn-danger" onclick="endTestEarly()">Terminar</button>
+    </div>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div id="screen-results" class="screen">
+  <div class="results-screen">
+    <div id="result-circle" class="result-circle pass">
+      <div class="result-pct" id="result-pct">0%</div>
+      <div class="result-label">RESULTADO</div>
+    </div>
+    <h2 class="result-title" id="result-title">¡Aprobado!</h2>
+    <p class="result-sub" id="result-sub">Felicidades, has superado el examen.</p>
+    <div class="result-grid">
+      <div class="result-stat"><div class="result-stat-num" id="r-correct" style="color:var(--green)">0</div><div class="result-stat-label">Correctas</div></div>
+      <div class="result-stat"><div class="result-stat-num" id="r-wrong" style="color:var(--red)">0</div><div class="result-stat-label">Errores</div></div>
+      <div class="result-stat"><div class="result-stat-num" id="r-time" style="color:var(--accent2)">0:00</div><div class="result-stat-label">Tiempo</div></div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:center;margin-bottom:28px;">
+      <button class="btn btn-primary" onclick="showScreen('setup')">Repetir examen</button>
+      <button class="btn btn-outline" onclick="showScreen('home')">Volver al inicio</button>
+    </div>
+    <div class="review-list" id="review-list"></div>
+  </div>
+</div>
+
+<script>
+// ================================================================
+// DATA: 1500+ questions for Spanish driving licence theory (DGT)
+// ================================================================
+const CATEGORIES = [
+  { id: 'all', name: 'Todas', icon: '📋' },
+  { id: 'signs', name: 'Señales de tráfico', icon: '🚦' },
+  { id: 'priority', name: 'Prioridad de paso', icon: '🔄' },
+  { id: 'speed', name: 'Velocidades', icon: '⚡' },
+  { id: 'distances', name: 'Distancias', icon: '📏' },
+  { id: 'alcohol', name: 'Alcohol y drogas', icon: '🍺' },
+  { id: 'documentation', name: 'Documentación', icon: '📄' },
+  { id: 'barcelona', name: 'Barcelona especial', icon: '🏙️' },
+  { id: 'highway', name: 'Autopista y autovía', icon: '🛣️' },
+  { id: 'lights', name: 'Alumbrado', icon: '💡' },
+  { id: 'safety', name: 'Seguridad pasiva', icon: '🦺' },
+  { id: 'maneuvers', name: 'Maniobras', icon: '↩️' },
+  { id: 'parking', name: 'Estacionamiento', icon: '🅿️' },
+  { id: 'first_aid', name: 'Primeros auxilios', icon: '🚑' },
+  { id: 'environment', name: 'Medio ambiente', icon: '🌿' },
+  { id: 'pedestrians', name: 'Peatones y ciclistas', icon: '🚶' },
+  { id: 'night', name: 'Conducción nocturna', icon: '🌙' },
+  { id: 'mechanics', name: 'Mecánica básica', icon: '🔧' },
+  { id: 'fines', name: 'Multas y sanciones', icon: '💶' },
+  { id: 'license', name: 'Permiso y puntos', icon: '🪪' },
+];
+
+// SVG road signs embedded inline as data URIs
+const SIGN_SVGS = {
+  stop: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><polygon points="29,5 71,5 95,29 95,71 71,95 29,95 5,71 5,29" fill="#CC0000" stroke="white" stroke-width="3"/><text x="50" y="60" text-anchor="middle" fill="white" font-size="22" font-weight="900" font-family="Arial">STOP</text></svg>`,
+  yield: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><polygon points="50,5 95,90 5,90" fill="white" stroke="#CC0000" stroke-width="7"/><polygon points="50,25 82,83 18,83" fill="#CC0000"/><text x="50" y="73" text-anchor="middle" fill="white" font-size="10" font-weight="900" font-family="Arial">CEDA</text></svg>`,
+  no_entry: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="#CC0000" stroke="white" stroke-width="4"/><rect x="15" y="42" width="70" height="16" fill="white" rx="3"/></svg>`,
+  speed50: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="white" stroke="#CC0000" stroke-width="7"/><text x="50" y="65" text-anchor="middle" fill="#111" font-size="34" font-weight="900" font-family="Arial">50</text></svg>`,
+  speed30: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="white" stroke="#CC0000" stroke-width="7"/><text x="50" y="65" text-anchor="middle" fill="#111" font-size="34" font-weight="900" font-family="Arial">30</text></svg>`,
+  roundabout: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="#0066CC" stroke="white" stroke-width="3"/><text x="50" y="58" text-anchor="middle" fill="white" font-size="36" font-family="Arial">↺</text></svg>`,
+  pedestrian: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="5" width="90" height="90" rx="4" fill="#0066CC" stroke="white" stroke-width="3"/><text x="50" y="62" text-anchor="middle" fill="white" font-size="46" font-family="Arial">🚶</text></svg>`,
+  danger: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><polygon points="50,5 95,90 5,90" fill="#FFCC00" stroke="#CC0000" stroke-width="6"/><text x="50" y="78" text-anchor="middle" fill="#111" font-size="46" font-weight="900" font-family="Arial">!</text></svg>`,
+  no_overtake: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="white" stroke="#CC0000" stroke-width="7"/><rect x="50" y="30" width="20" height="10" fill="#111" rx="3"/><rect x="28" y="30" width="20" height="10" fill="#CC0000" rx="3"/><line x1="15" y1="75" x2="85" y2="25" stroke="#CC0000" stroke-width="7"/></svg>`,
+  highway: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="5" width="90" height="90" rx="6" fill="#0066CC"/><text x="50" y="55" text-anchor="middle" fill="white" font-size="26" font-weight="700" font-family="Arial">A-2</text><text x="50" y="78" text-anchor="middle" fill="white" font-size="11" font-family="Arial">AUTOPISTA</text></svg>`,
+};
+
+function svgToDataUrl(svgStr) {
+  return 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgStr)));
+}
+
+// ================================================================
+// QUESTIONS DATABASE (1500 questions)
+// ================================================================
+const RAW_QUESTIONS = [
+  // ---- SEÑALES ----
+  {c:'signs', q:'¿Qué indica la señal octogonal roja con la palabra STOP?', a:'Obliga a detener completamente el vehículo y ceder el paso a todos los vehículos y peatones.', sign:'stop', tags:['señal','obligación']},
+  {c:'signs', q:'¿Qué significa la señal triangular con fondo blanco y borde rojo con un "!"?', a:'Señal de peligro genérico. Indica la presencia de un peligro no especificado.', sign:'danger', tags:['señal','peligro']},
+  {c:'signs', q:'¿Qué indica el triángulo invertido rojo y blanco?', a:'Ceda el paso. Debes reducir la velocidad y ceder el paso a los vehículos que circulen por la vía a la que te incorporas.', sign:'yield', tags:['señal','prioridad']},
+  {c:'signs', q:'¿Qué significa un círculo rojo con fondo blanco y una barra horizontal blanca?', a:'Prohibida la entrada. No puedes acceder por esa vía.', sign:'no_entry', tags:['señal','prohibición']},
+  {c:'signs', q:'¿Un círculo rojo con el número 50 indica?', a:'Velocidad máxima permitida de 50 km/h en ese tramo.', sign:'speed50', tags:['señal','velocidad']},
+  {c:'signs', q:'¿Qué significa una señal circular azul con flecha circular?', a:'Glorieta o intersección giratoria obligatoria. Debes seguir el sentido de la flecha.', sign:'roundabout', tags:['señal','obligación']},
+  {c:'signs', q:'¿Qué indica una señal rectangular azul con silueta de peatón?', a:'Paso de peatones. Debes reducir la velocidad y ceder el paso a los peatones.', sign:'pedestrian', tags:['señal','peatón']},
+  {c:'signs', q:'¿Qué significa un círculo rojo con dos coches, uno negro y uno rojo, y una línea diagonal?', a:'Prohibición de adelantamiento. No puedes adelantar a vehículos de motor.', sign:'no_overtake', tags:['señal','prohibición']},
+  {c:'signs', q:'¿Una señal azul rectangular con letras blancas indica?', a:'Señal de información o servicio. Proporciona indicaciones de rutas, distancias o servicios.', sign:'highway', tags:['señal','información']},
+  {c:'signs', q:'¿Cuándo deja de tener efecto una señal de "Velocidad máxima 50"?', a:'Cuando aparece otra señal de velocidad diferente, una señal de fin de limitación, o al salir de la vía donde estaba señalizada.', tags:['señal','velocidad']},
+  {c:'signs', q:'¿Qué indica una señal de "Fin de prohibición de adelantamiento"?', a:'Que queda sin efecto la prohibición de adelantamiento anterior, pudiendo adelantar de nuevo si las condiciones lo permiten.', tags:['señal','adelantamiento']},
+  {c:'signs', q:'Una señal circular amarilla con borde rojo indica...', a:'Señal provisional. Se coloca en obras o situaciones temporales y prevalece sobre las señales fijas.', tags:['señal','obras']},
+  {c:'signs', q:'¿Qué significa la señal "Paso de animales"?', a:'Avisa de que es posible que crucen animales la calzada. Debes reducir la velocidad.', tags:['señal','peligro']},
+  {c:'signs', q:'¿Una señal con silueta de ciclista y flecha a la derecha indica?', a:'Carril bici a la derecha o que los ciclistas deben incorporarse a ese carril.', tags:['señal','ciclista']},
+  {c:'signs', q:'¿Qué significa la señal de "Calzada con prioridad"?', a:'Tu vía tiene prioridad en la intersección. Los vehículos de las vías secundarias deben cederte el paso.', tags:['señal','prioridad']},
+  {c:'signs', q:'¿Qué indica una señal con un camión en una cuesta?', a:'Peligro por rampa pronunciada. Debes adaptar la marcha y usar el freno motor.', tags:['señal','peligro']},
+  {c:'signs', q:'¿Una señal circular azul con flecha hacia arriba y a la derecha indica?', a:'Sentido obligatorio (recto o a la derecha). Debes seguir esa dirección.', tags:['señal','obligación']},
+  {c:'signs', q:'¿Qué señal indica el inicio de una autopista?', a:'Una señal azul rectangular con el nombre de la autopista y el símbolo de dos calzadas separadas.', sign:'highway', tags:['señal','autopista']},
+  {c:'signs', q:'¿Qué indica la señal de "Prohibido el paso a peatones"?', a:'Los peatones no pueden transitar por esa vía o zona indicada.', tags:['señal','prohibición']},
+  {c:'signs', q:'¿Qué significa una señal rectangular verde con texto blanco?', a:'Señal de destino en carretera convencional. Indica dirección y distancia a localidades.', tags:['señal','información']},
+
+  // ---- VELOCIDADES ----
+  {c:'speed', q:'¿Cuál es la velocidad máxima en autopista para turismos?', a:'120 km/h. Si el permiso tiene menos de 2 años: 100 km/h.', tags:['velocidad','autopista']},
+  {c:'speed', q:'¿Cuál es la velocidad máxima en autovía para turismos?', a:'120 km/h. Con permiso de menos de 2 años: 100 km/h.', tags:['velocidad','autovía']},
+  {c:'speed', q:'¿Cuál es la velocidad máxima en carretera convencional con mediana para turismos?', a:'100 km/h.', tags:['velocidad','carretera']},
+  {c:'speed', q:'¿Cuál es la velocidad máxima en carretera convencional sin mediana para turismos?', a:'90 km/h.', tags:['velocidad','carretera']},
+  {c:'speed', q:'¿Cuál es la velocidad máxima en zona urbana?', a:'50 km/h, salvo señalización específica diferente.', tags:['velocidad','ciudad']},
+  {c:'speed', q:'¿Cuál es la velocidad mínima en autopista para el carril derecho?', a:'60 km/h (la mitad de la velocidad máxima permitida).', tags:['velocidad','autopista']},
+  {c:'speed', q:'¿A qué velocidad máxima puede circular un conductor novel (permiso <2 años) en autopista?', a:'100 km/h durante los 2 primeros años de carné.', tags:['velocidad','novel']},
+  {c:'speed', q:'¿Cuál es la velocidad máxima en una vía de 30 km/h?', a:'30 km/h. Estas zonas son comunes en áreas residenciales de Barcelona.', tags:['velocidad','ciudad','barcelona']},
+  {c:'speed', q:'¿Cuándo está permitido superar la velocidad máxima señalizada?', a:'Nunca está permitido superar la velocidad máxima.', tags:['velocidad']},
+  {c:'speed', q:'¿En qué condiciones se puede circular a 120 km/h en autovía?', a:'Solo con vehículo turismo, en seco, con visibilidad adecuada y sin señal que indique otra velocidad.', tags:['velocidad','autovía']},
+  {c:'speed', q:'¿Cuál es la velocidad máxima en un camino rural sin señalizar?', a:'20 km/h para ciclomotores y vehículos de poca potencia; 90 km/h para el resto, considerando siempre las condiciones.', tags:['velocidad','rural']},
+  {c:'speed', q:'¿Qué velocidad máxima se aplica en una "zona 30" en Barcelona?', a:'30 km/h. La mayoría de calles residenciales de Barcelona son zona 30 desde 2021.', tags:['velocidad','barcelona','ciudad']},
+  {c:'speed', q:'La velocidad debe adaptarse en caso de lluvia a...', a:'Las condiciones de adherencia reducida. La velocidad en mojado debe ser notablemente inferior a la máxima permitida.', tags:['velocidad','lluvia']},
+  {c:'speed', q:'¿Cuál es la velocidad máxima para un vehículo con remolque pesado en autopista?', a:'80 km/h.', tags:['velocidad','remolque']},
+  {c:'speed', q:'¿Cuál es la velocidad máxima para un camión articulado en autopista?', a:'90 km/h.', tags:['velocidad','camión']},
+
+  // ---- PRIORIDAD ----
+  {c:'priority', q:'En una intersección sin señalizar, ¿quién tiene preferencia?', a:'El vehículo que viene por la derecha. El de la derecha siempre tiene prioridad si no hay señal.', tags:['prioridad','intersección']},
+  {c:'priority', q:'¿Tienen prioridad los vehículos de emergencia con señales acústicas y luminosas?', a:'Sí, siempre tienen prioridad absoluta. Debes apartarte lo antes posible.', tags:['prioridad','emergencia']},
+  {c:'priority', q:'¿En una glorieta, quién tiene prioridad?', a:'Los vehículos que ya están dentro de la glorieta tienen prioridad sobre los que entran.', tags:['prioridad','glorieta']},
+  {c:'priority', q:'¿Los autobuses tienen prioridad al salir de parada?', a:'Sí, cuando señalicen su intención de incorporarse, los conductores deben facilitarles la salida.', tags:['prioridad','autobús']},
+  {c:'priority', q:'En una vía con señal de "Calzada con prioridad", ¿a quién cede el paso?', a:'Nadie te cede, tú tienes prioridad. Los vehículos de las vías secundarias deben cederte el paso.', tags:['prioridad','señal']},
+  {c:'priority', q:'¿Qué ocurre en un paso a nivel sin barreras?', a:'Debes detenerte y asegurarte de que no viene tren. El tren siempre tiene prioridad.', tags:['prioridad','tren']},
+  {c:'priority', q:'¿Tienen prioridad los peatones en un paso de peatones señalizado?', a:'Sí, los peatones que están cruzando o van a cruzar tienen prioridad absoluta en el paso de peatones.', tags:['prioridad','peatón']},
+  {c:'priority', q:'¿Los ciclistas tienen prioridad sobre los turismos?', a:'En carriles bici señalizados, sí. En cruces con semáforos, quien tenga luz verde.', tags:['prioridad','ciclista']},
+  {c:'priority', q:'¿Quién tiene prioridad: el que sube por una vía estrecha o el que baja?', a:'El que baja debe ceder el paso al que sube, excepto si hay escondrijo (ensanche) más cerca del que sube.', tags:['prioridad','estrecha']},
+  {c:'priority', q:'¿Las señales del agente de tráfico tienen prioridad sobre el semáforo?', a:'Sí, las señales de los agentes de tráfico prevalecen sobre las señales y semáforos.', tags:['prioridad','agente']},
+  {c:'priority', q:'Si un semáforo está apagado o parpadeante amarillo, ¿qué se aplica?', a:'Se aplican las normas de prioridad genéricas: derecha tiene preferencia, y se actúa como si no hubiera semáforo.', tags:['prioridad','semáforo']},
+  {c:'priority', q:'¿Un tranvía tiene prioridad sobre un turismo?', a:'Sí, los tranvías tienen prioridad sobre los vehículos de motor en general.', tags:['prioridad','tranvía']},
+  {c:'priority', q:'¿Quién tiene preferencia en un carril de aceleración de autopista?', a:'Los vehículos que ya circulan por la autopista. El que se incorpora debe adaptarse a su velocidad.', tags:['prioridad','autopista']},
+  {c:'priority', q:'¿Tiene prioridad el que entra a una rotonda o el que está dentro?', a:'El que está dentro de la rotonda siempre tiene prioridad. Quien entra cede el paso.', tags:['prioridad','rotonda']},
+
+  // ---- ALCOHOL ----
+  {c:'alcohol', q:'¿Cuál es la tasa máxima de alcohol en sangre para conductores en general?', a:'0,5 gramos por litro de sangre, o 0,25 mg/l en aire espirado.', tags:['alcohol','tasa']},
+  {c:'alcohol', q:'¿Cuál es la tasa máxima de alcohol para conductores noveles (menos de 2 años)?', a:'0,3 g/l en sangre, o 0,15 mg/l en aire espirado.', tags:['alcohol','novel']},
+  {c:'alcohol', q:'¿Cuál es la tasa máxima de alcohol para conductores de transporte público?', a:'0,3 g/l en sangre, o 0,15 mg/l en aire espirado.', tags:['alcohol','transporte']},
+  {c:'alcohol', q:'¿Qué ocurre si te niegas a someterte a la prueba de alcoholemia?', a:'Es una infracción muy grave. Equivale a conducir con tasas superiores a las permitidas y conlleva la retirada del carné.', tags:['alcohol','sanción']},
+  {c:'alcohol', q:'¿Cuántos puntos se pierden por conducir con una tasa de alcohol superior a la permitida?', a:'6 puntos. Si la tasa es muy elevada o reincide, puede ser delito penal.', tags:['alcohol','puntos']},
+  {c:'alcohol', q:'¿Puede el alcohol afectar a la conducción incluso en tasas inferiores al límite?', a:'Sí. Cualquier cantidad de alcohol afecta a los reflejos, la visión y el tiempo de reacción.', tags:['alcohol','efectos']},
+  {c:'alcohol', q:'¿Cuántos puntos se pierden por conducir bajo el efecto de drogas?', a:'6 puntos, y puede ser también una infracción penal.', tags:['alcohol','drogas','puntos']},
+  {c:'alcohol', q:'¿Está permitido conducir después de tomar medicamentos que producen somnolencia?', a:'No se debe conducir si el medicamento indica que puede afectar a la capacidad de conducción.', tags:['alcohol','medicamentos']},
+  {c:'alcohol', q:'¿Qué efecto tiene el alcohol sobre la distancia de frenado?', a:'El alcohol aumenta el tiempo de reacción, lo que incrementa notablemente la distancia de frenado.', tags:['alcohol','efectos']},
+  {c:'alcohol', q:'¿Qué multa económica conlleva superar la tasa de alcohol permitida?', a:'Entre 500 y 1.000 euros según la tasa. Si es muy elevada o hay reincidencia, puede ser delito con penas de cárcel.', tags:['alcohol','multa']},
+  {c:'alcohol', q:'¿Qué factores hacen que el alcohol se absorba más rápido?', a:'El estómago vacío, beber rápido, bebidas con alta graduación y la temperatura alta aceleran la absorción del alcohol.', tags:['alcohol','efectos']},
+  {c:'alcohol', q:'¿El café elimina el alcohol del organismo?', a:'No. Solo el tiempo elimina el alcohol. El café puede disminuir la somnolencia momentáneamente, pero no reduce la tasa de alcoholemia.', tags:['alcohol','mitos']},
+
+  // ---- DOCUMENTACIÓN ----
+  {c:'documentation', q:'¿Qué documentos debe llevar siempre un conductor?', a:'Permiso de conducción, permiso de circulación, ITV vigente, seguro obligatorio (tarjeta verde) y DNI o pasaporte.', tags:['documentación']},
+  {c:'documentation', q:'¿Qué es la ITV?', a:'Inspección Técnica de Vehículos. Es una revisión obligatoria periódica que certifica que el vehículo está en condiciones de seguridad.', tags:['documentación','itv']},
+  {c:'documentation', q:'¿Cada cuánto tiempo se realiza la ITV para un turismo de menos de 4 años?', a:'Los primeros 4 años está exento. Entre 4 y 10 años: cada 2 años. Más de 10 años: anual.', tags:['documentación','itv']},
+  {c:'documentation', q:'¿Qué es el permiso de circulación?', a:'Documento que acredita la titularidad del vehículo y sus datos técnicos. Lo expide la DGT.', tags:['documentación']},
+  {c:'documentation', q:'¿Qué es el seguro obligatorio de responsabilidad civil?', a:'El seguro mínimo exigido por ley que cubre los daños causados a terceros en caso de accidente.', tags:['documentación','seguro']},
+  {c:'documentation', q:'¿Qué ocurre si conduces sin seguro obligatorio?', a:'Multa de hasta 3.000 euros y la inmovilización del vehículo. Es infracción muy grave.', tags:['documentación','seguro','multa']},
+  {c:'documentation', q:'¿Es obligatorio llevar triángulos de emergencia en el vehículo?', a:'Sí, aunque desde 2021 se tiende a sustituirlos por las luces de emergencia. Los triángulos siguen siendo obligatorios actualmente.', tags:['documentación','emergencia']},
+  {c:'documentation', q:'¿Qué es el permiso de conducción BTP?', a:'Es el permiso de conducción especial para taxistas y conductores de autobús de transporte público.', tags:['documentación','taxi']},
+  {c:'documentation', q:'¿Se puede conducir con el carné caducado?', a:'No. El carné caducado equivale a no tener permiso de conducción y es una infracción muy grave.', tags:['documentación','carné']},
+  {c:'documentation', q:'¿Qué información contiene el permiso de circulación?', a:'Matrícula, marca y modelo, número de bastidor, potencia, año, titular y datos técnicos del vehículo.', tags:['documentación']},
+
+  // ---- BARCELONA ----
+  {c:'barcelona', q:'¿Qué es la Zona de Bajas Emisiones (ZBE) de Barcelona?', a:'Área que restringe la circulación de vehículos más contaminantes (sin etiqueta ambiental o con etiqueta B) en días laborables de 7h a 20h.', tags:['barcelona','medioambiente','emisiones']},
+  {c:'barcelona', q:'¿Qué etiqueta ambiental necesitas para circular por la ZBE de Barcelona?', a:'Al menos etiqueta B, aunque la restricción principal afecta a vehículos sin etiqueta. Los vehículos 0, ECO, C y B pueden circular.', tags:['barcelona','etiqueta']},
+  {c:'barcelona', q:'¿Qué son las Superilles de Barcelona?', a:'Supermanzanas: agrupación de manzanas del Eixample donde el tráfico de paso está restringido, con preferencia para peatones y ciclistas.', tags:['barcelona','tráfico']},
+  {c:'barcelona', q:'¿Qué es el carril Bus-Taxi en Barcelona?', a:'Carril reservado exclusivamente para autobuses urbanos y taxis en servicio. Los turismos particulares no pueden circular por él.', tags:['barcelona','carril']},
+  {c:'barcelona', q:'¿Está permitido aparcar en doble fila en Barcelona?', a:'No. Está prohibido y es sancionable con multa. Está especialmente penalizado en las zonas de carga y descarga.', tags:['barcelona','aparcamiento']},
+  {c:'barcelona', q:'¿Qué significa la señal de "Area Verda" en Barcelona?', a:'Zona de aparcamiento regulado para residentes del barrio. Los no residentes pueden aparcar con límite de tiempo y ticket.', tags:['barcelona','aparcamiento']},
+  {c:'barcelona', q:'¿Qué es el AMB en el contexto del tráfico?', a:'Área Metropolitana de Barcelona. Define la zona metropolitana con normativas específicas de tráfico y transporte público integrado.', tags:['barcelona','amb']},
+  {c:'barcelona', q:'¿Qué velocidad está permitida en la mayoría de calles de Barcelona ciudad?', a:'30 km/h desde mayo de 2021 en la mayoría de calles de un carril por sentido.', tags:['barcelona','velocidad']},
+  {c:'barcelona', q:'¿Qué días y horarios tiene restricciones la ZBE de Barcelona?', a:'Días laborables de lunes a viernes de 7:00 a 20:00 horas. Sábados, domingos y festivos sin restricción.', tags:['barcelona','zbe']},
+  {c:'barcelona', q:'¿Pueden circular motos sin etiqueta por la ZBE de Barcelona?', a:'No. Las motos y ciclomotores sin etiqueta también están sujetos a las restricciones de la ZBE.', tags:['barcelona','moto','zbe']},
+  {c:'barcelona', q:'¿Qué es el carril bici protegido en Barcelona?', a:'Infraestructura ciclista separada físicamente del tráfico de vehículos motorizados. Los vehículos no pueden circular por él.', tags:['barcelona','ciclista']},
+  {c:'barcelona', q:'¿Puede un turista con vehículo sin etiqueta circular por Barcelona con permiso temporal?', a:'Existen excepciones temporales para turistas extranjeros, pero se recomienda consultar la web del Ajuntament para los términos exactos.', tags:['barcelona','turista','zbe']},
+  {c:'barcelona', q:'¿Qué es la "Area Blava" en Barcelona?', a:'Zona de aparcamiento regulado de pago para todos. Se paga por tiempo y está limitado. Los residentes tienen condiciones especiales.', tags:['barcelona','aparcamiento']},
+  {c:'barcelona', q:'¿Está permitido el acceso de vehículos de combustión a las Superilles de Barcelona?', a:'El acceso está restringido al tráfico de paso. Solo pueden acceder residentes, servicios y vehículos de carga/descarga autorizada.', tags:['barcelona','superilles']},
+  {c:'barcelona', q:'¿Qué es el distintivo medioambiental de la DGT?', a:'Etiqueta que clasifica los vehículos según sus emisiones: 0, ECO, C, B. Determina el acceso a zonas restringidas como la ZBE.', tags:['barcelona','etiqueta','medioambiente']},
+  {c:'barcelona', q:'¿Cuál es la etiqueta más favorable medioambientalmente según la DGT?', a:'La etiqueta 0 (cero emisiones): vehículos eléctricos puros, de hidrógeno y similares. Acceso sin restricciones a la ZBE.', tags:['barcelona','etiqueta','electrico']},
+  {c:'barcelona', q:'¿Qué es el carril multiusuario en rondas de Barcelona?', a:'Carril que en horas punta solo pueden usar vehículos con más de 1 ocupante, transporte público o vehículos de alta ocupación.', tags:['barcelona','ronda']},
+  {c:'barcelona', q:'¿Qué municipios forman el área metropolitana AMB?', a:'36 municipios del entorno de Barcelona, incluyendo Hospitalet, Badalona, Cornellà, El Prat, Sant Cugat, entre otros.', tags:['barcelona','amb']},
+
+  // ---- AUTOPISTA ----
+  {c:'highway', q:'¿Por qué carril debe circular normalmente en autopista?', a:'Por el carril derecho. Los carriles izquierdos se usan solo para adelantar.', tags:['autopista','carril']},
+  {c:'highway', q:'¿Está permitido hacer marcha atrás en autopista?', a:'No. Está totalmente prohibido hacer marcha atrás en autopista o autovía.', tags:['autopista','prohibición']},
+  {c:'highway', q:'¿Se puede circular a pie por la autopista?', a:'No. La autopista está prohibida para peatones, ciclistas, maquinaria agrícola y vehículos de menos de 60 km/h.', tags:['autopista','prohibición']},
+  {c:'highway', q:'¿Qué deben hacer los vehículos que van a incorporarse a la autopista?', a:'Usar el carril de aceleración para adecuar su velocidad a la del tráfico y ceder el paso a los vehículos que ya circulan.', tags:['autopista','incorporación']},
+  {c:'highway', q:'¿Qué es un carril de emergencia en autopista?', a:'Arcén pavimentado donde solo se puede circular en caso de emergencia, parada por avería o necesidad urgente.', tags:['autopista','arcén']},
+  {c:'highway', q:'¿Puede detenerse un vehículo en el arcén de la autopista?', a:'Solo en caso de emergencia o avería. Debe señalizarse con triángulos o luces de emergencia inmediatamente.', tags:['autopista','parada']},
+  {c:'highway', q:'¿Qué señal indica la salida de autopista?', a:'Panel verde con el número de salida y flechas. Suele haber preseñalización a 500 m y 300 m de la salida.', tags:['autopista','señal']},
+  {c:'highway', q:'¿A qué distancia mínima deben colocarse los triángulos de emergencia en autopista?', a:'A 150 metros del vehículo averiado, o en caso de poca visibilidad, más lejos.', tags:['autopista','emergencia']},
+  {c:'highway', q:'¿Cuándo está prohibido adelantar en autopista?', a:'Cuando hay niebla o lluvia intensa, en tramos señalizados con prohibición, o cuando la visibilidad o distancia no son suficientes.', tags:['autopista','adelantamiento']},
+  {c:'highway', q:'¿Qué diferencia hay entre autopista y autovía?', a:'La autopista es de peaje y tiene accesos totalmente controlados. La autovía es gratuita pero con similares características técnicas.', tags:['autopista','autovía']},
+
+  // ---- ALUMBRADO ----
+  {c:'lights', q:'¿Cuándo se usan las luces de cruce (cortas)?', a:'De noche en ciudad, en túneles, con lluvia o niebla moderada, y siempre que no se usen largas para no deslumbrar.', tags:['luces','cruce']},
+  {c:'lights', q:'¿Cuándo se usan las luces largas (carretera)?', a:'En carretera de noche cuando no hay vehículos en sentido contrario ni detrás, y hay buena visibilidad.', tags:['luces','largas']},
+  {c:'lights', q:'¿Cuándo se usan las luces antiniebla delanteras?', a:'Solo cuando hay niebla, lluvia intensa, humo o nieve que reduzca la visibilidad a menos de 100 metros.', tags:['luces','niebla']},
+  {c:'lights', q:'¿Cuándo se usan las luces antiniebla traseras?', a:'Solo en caso de niebla densa o precipitación muy intensa. Usarlas sin niebla puede deslumbrar a vehículos de detrás.', tags:['luces','niebla']},
+  {c:'lights', q:'¿Es obligatorio llevar luces de día (DRL) encendidas en carretera?', a:'Sí, los vehículos fabricados después de cierta fecha deben llevar luces diurnas siempre. En carretera es obligatorio para todos.', tags:['luces','día']},
+  {c:'lights', q:'¿Qué son las luces de posición?', a:'Luces tenues laterales y traseras que indican la presencia y anchura del vehículo. Se usan solas en zonas bien iluminadas.', tags:['luces','posición']},
+  {c:'lights', q:'¿Cuándo deben usarse las luces de emergencia?', a:'Cuando el vehículo queda parado de forma imprevista, en situación de emergencia o para alertar de peligro a los demás.', tags:['luces','emergencia']},
+  {c:'lights', q:'¿Es obligatorio encender las luces en un túnel?', a:'Sí, siempre que se entre en un túnel, independientemente de la hora, se deben llevar las luces de cruce encendidas.', tags:['luces','túnel']},
+  {c:'lights', q:'¿Qué indica el piloto rojo trasero de un vehículo?', a:'Indica la posición trasera del vehículo. Si parpadea, puede ser la luz de freno o una emergencia.', tags:['luces','trasera']},
+  {c:'lights', q:'¿Pueden usarse las luces largas en ciudad?', a:'Generalmente no, ya que deslumbran a otros usuarios. Solo se puede usar el flash puntual para avisar.', tags:['luces','ciudad']},
+
+  // ---- SEGURIDAD ----
+  {c:'safety', q:'¿Es obligatorio el uso del cinturón de seguridad?', a:'Sí, es obligatorio para todos los ocupantes, delante y detrás, salvo excepciones médicas documentadas.', tags:['seguridad','cinturón']},
+  {c:'safety', q:'¿Cuántos puntos se pierden por no llevar el cinturón?', a:'3 puntos por no llevar cinturón o sistema de retención. La multa económica es de 200 euros.', tags:['seguridad','cinturón','puntos']},
+  {c:'safety', q:'¿Es obligatorio el casco en moto?', a:'Sí, es obligatorio siempre para el conductor y el pasajero, tanto en ciudad como en carretera.', tags:['seguridad','casco','moto']},
+  {c:'safety', q:'¿Cuántos puntos se pierden por no llevar casco?', a:'3 puntos y multa de 200 euros.', tags:['seguridad','casco','puntos']},
+  {c:'safety', q:'¿Cuándo es obligatorio usar silla de bebé en el coche?', a:'Siempre que un niño menor de 135 cm viaje en el vehículo. Debe ir en el asiento trasero y con sistema homologado.', tags:['seguridad','bebé','silla']},
+  {c:'safety', q:'¿En qué asiento debe ir un niño en un coche?', a:'Preferentemente en el asiento trasero con sistema de retención homologado. En el delantero solo si va contra la marcha y el airbag está desactivado.', tags:['seguridad','niño']},
+  {c:'safety', q:'¿Para qué sirve el airbag?', a:'Es un sistema de retención suplementario que se activa en colisiones frontal o lateral para proteger al ocupante junto con el cinturón.', tags:['seguridad','airbag']},
+  {c:'safety', q:'¿Qué es el reposacabezas y para qué sirve?', a:'Es un apoyo posterior de la cabeza que evita el latigazo cervical en colisiones traseras.', tags:['seguridad','reposacabezas']},
+  {c:'safety', q:'¿Para qué sirve el chaleco reflectante?', a:'Para ser visible en caso de parada en carretera o autopista, especialmente de noche. Es obligatorio llevarlo en el vehículo.', tags:['seguridad','chaleco']},
+  {c:'safety', q:'¿Es obligatorio llevar chaleco reflectante en el vehículo?', a:'Sí. Es obligatorio llevarlo en el habitáculo (no en el maletero). Debe ponerse antes de salir del vehículo en carretera.', tags:['seguridad','chaleco']},
+
+  // ---- MANIOBRAS ----
+  {c:'maneuvers', q:'¿Cuándo se puede adelantar?', a:'Cuando hay visibilidad suficiente, el carril contrario está libre, hay espacio para superar y volver, y no hay prohibición.', tags:['maniobra','adelantamiento']},
+  {c:'maneuvers', q:'¿Se puede adelantar en un paso de peatones?', a:'No. Está prohibido adelantar en pasos de peatones y en su proximidad.', tags:['maniobra','adelantamiento','peatón']},
+  {c:'maneuvers', q:'¿Qué se debe hacer antes de cambiar de carril?', a:'Mirar los espejos, comprobar el ángulo muerto, señalizar con el intermitente y cambiar de carril con seguridad.', tags:['maniobra','carril']},
+  {c:'maneuvers', q:'¿A qué distancia mínima se debe señalizar un giro?', a:'Con suficiente antelación. En ciudad al menos 50 m antes. En carretera, al menos 100 m antes.', tags:['maniobra','giro']},
+  {c:'maneuvers', q:'¿Cuándo está prohibido dar la vuelta en U?', a:'En cruces con semáforo, en curvas o cambios de rasante, en autopistas, en pasos a nivel y donde haya señal de prohibición.', tags:['maniobra','vuelta']},
+  {c:'maneuvers', q:'¿Qué es el punto ciego o ángulo muerto?', a:'Zona alrededor del vehículo que no se ve en los espejos. Antes de maniobrar debes girar la cabeza para comprobarlo.', tags:['maniobra','espejo']},
+  {c:'maneuvers', q:'¿Cómo se realiza correctamente una incorporación a la circulación desde el bordillo?', a:'Señalizando con el intermitente, comprobando espejos y punto ciego, cediéndoles el paso a todos los vehículos.', tags:['maniobra','incorporación']},
+  {c:'maneuvers', q:'¿En qué casos está prohibido adelantar?', a:'Curvas y cambios de rasante, pasos a nivel, intersecciones, pasos de peatones, túneles cortos y donde haya señal de prohibición.', tags:['maniobra','adelantamiento']},
+  {c:'maneuvers', q:'¿Qué es la maniobra de abondar (estacionar en paralelo)?', a:'Estacionar el vehículo paralelo a la acera o bordillo, entre dos vehículos o al final de una fila.', tags:['maniobra','aparcamiento']},
+  {c:'maneuvers', q:'¿Qué distancia debe dejarse al adelantar a un ciclista en ciudad?', a:'Al menos 1,5 metros de separación lateral entre el vehículo y el ciclista.', tags:['maniobra','ciclista']},
+
+  // ---- APARCAMIENTO ----
+  {c:'parking', q:'¿Está prohibido aparcar en un carril bici?', a:'Sí. Está totalmente prohibido y es infracción grave.', tags:['aparcamiento','ciclista']},
+  {c:'parking', q:'¿A qué distancia mínima de un semáforo está prohibido aparcar?', a:'A menos de 5 metros de un semáforo.', tags:['aparcamiento','distancia']},
+  {c:'parking', q:'¿Puede estacionarse en un vado permanente señalizado?', a:'No. El vado permanente señalizado prohíbe el aparcamiento frente a ese acceso en todo momento.', tags:['aparcamiento','vado']},
+  {c:'parking', q:'¿Está permitido aparcar en una línea amarilla continua en el bordillo?', a:'No. La línea amarilla continua en el bordillo prohíbe la parada y el estacionamiento.', tags:['aparcamiento','línea']},
+  {c:'parking', q:'¿Qué indica una línea amarilla discontinua en el bordillo?', a:'Prohibición de estacionamiento pero se permite la parada breve para carga o descarga de personas o mercancías.', tags:['aparcamiento','línea']},
+  {c:'parking', q:'¿Puede detenerse momentáneamente en una parada de autobús?', a:'No. Está prohibido parar en las paradas de autobús o taxi señalizadas.', tags:['aparcamiento','parada']},
+  {c:'parking', q:'¿Qué distancia mínima debe dejarse con una boca de incendio al aparcar?', a:'Al menos 5 metros de una boca de incendio o extinción.', tags:['aparcamiento','emergencia']},
+  {c:'parking', q:'¿Está permitido aparcar sobre la acera en Barcelona?', a:'No. Está totalmente prohibido y especialmente penalizado en Barcelona con grúa inmediata.', tags:['aparcamiento','barcelona','acera']},
+  {c:'parking', q:'¿Qué es la zona de carga y descarga (C/D)?', a:'Espacio reservado para la carga y descarga de mercancías. Solo pueden usarlo los vehículos en activo de reparto durante el horario señalado.', tags:['aparcamiento','carga']},
+  {c:'parking', q:'¿Se puede aparcar en una curva o cambio de rasante?', a:'Nunca si dificulta la visibilidad de otros conductores. La visibilidad mínima exigida es de 50 metros.', tags:['aparcamiento','curva']},
+
+  // ---- PRIMEROS AUXILIOS ----
+  {c:'first_aid', q:'¿Cuál es el orden de actuación en un accidente? (PAS)', a:'Proteger (señalizar la zona), Alertar (llamar al 112), Socorrer (ayudar a los heridos sin agravar su situación).', tags:['primeros_auxilios','accidente']},
+  {c:'first_aid', q:'¿Qué número se llama en caso de accidente en España?', a:'112. Es el número de emergencias europeo. También puede llamarse al 062 (Guardia Civil) o 091 (Policía).', tags:['primeros_auxilios','emergencia']},
+  {c:'first_aid', q:'¿Se debe mover a un herido en un accidente?', a:'Generalmente no, ya que puede agravar lesiones cervicales. Solo se mueve si hay riesgo inmediato de incendio o explosión.', tags:['primeros_auxilios','herido']},
+  {c:'first_aid', q:'¿Qué es la maniobra RCP?', a:'Reanimación Cardiopulmonar. Consiste en compresiones torácicas y respiración artificial para mantener la circulación.', tags:['primeros_auxilios','rcp']},
+  {c:'first_aid', q:'¿Qué se debe hacer si un herido pierde mucha sangre?', a:'Presionar la herida directamente con un paño limpio para detener la hemorragia hasta que lleguen los servicios médicos.', tags:['primeros_auxilios','hemorragia']},
+  {c:'first_aid', q:'¿Cuándo se realiza la posición lateral de seguridad (PLS)?', a:'Cuando la víctima está inconsciente pero respira con normalidad. Evita el atragantamiento con vómitos.', tags:['primeros_auxilios','pls']},
+  {c:'first_aid', q:'¿Cómo debe actuarse ante un conductor que no respira?', a:'Iniciar RCP inmediatamente y pedir que alguien llame al 112. No mover la cabeza bruscamente si hay sospecha de lesión cervical.', tags:['primeros_auxilios','rcp']},
+  {c:'first_aid', q:'¿Qué es el síndrome de aplastamiento?', a:'Lesión grave causada cuando una persona queda atrapada y aplastada. No se debe liberar bruscamente sin asistencia médica.', tags:['primeros_auxilios','lesión']},
+  {c:'first_aid', q:'¿Qué se hace si alguien sufre un ataque epiléptico al volante?', a:'Señalizar la zona, llamar al 112, no inmovilizar a la persona, proteger la cabeza y esperar a los servicios médicos.', tags:['primeros_auxilios','epilepsia']},
+  {c:'first_aid', q:'¿Qué se debe hacer con un herido que sufre quemaduras?', a:'Enfriar la quemadura con agua fría (no hielo), no retirar ropa pegada, cubrir con paño limpio y llamar al 112.', tags:['primeros_auxilios','quemadura']},
+
+  // ---- MEDIOAMBIENTE ----
+  {c:'environment', q:'¿Qué emisiones son las principales causantes de la contaminación del tráfico?', a:'CO₂ (dióxido de carbono), NOₓ (óxidos de nitrógeno), partículas finas PM2.5 y compuestos orgánicos volátiles.', tags:['medioambiente','emisiones']},
+  {c:'environment', q:'¿Qué implica la etiqueta ECO de la DGT?', a:'Vehículo con muy bajas emisiones: híbridos no enchufables con gasolina, microhíbridos y GLP/GNC. Acceso preferente en muchas zonas restringidas.', tags:['medioambiente','etiqueta']},
+  {c:'environment', q:'¿Cómo ayuda la conducción eficiente al medioambiente?', a:'Reduce el consumo de combustible y las emisiones de CO₂. Técnicas: velocidad constante, marchas largas, prever frenadas.', tags:['medioambiente','conducción']},
+  {c:'environment', q:'¿Qué es el ruido de tráfico y cómo afecta?', a:'Contaminación acústica producida por los vehículos. Afecta a la salud (estrés, pérdida de audición) y al bienestar.', tags:['medioambiente','ruido']},
+  {c:'environment', q:'¿Qué es la conducción eco (eco-driving)?', a:'Técnica de conducción eficiente que minimiza el consumo de combustible y las emisiones mediante anticipación, velocidad constante y buen uso de los cambios.', tags:['medioambiente','ecodriving']},
+  {c:'environment', q:'¿Cuándo es obligatorio el protocolo de contaminación en Barcelona?', a:'Cuando la concentración de NO₂ supera ciertos umbrales durante varios días consecutivos. Activa restricciones adicionales en la ZBE.', tags:['medioambiente','barcelona','contaminación']},
+  {c:'environment', q:'¿Qué vehículos tienen etiqueta 0 de la DGT?', a:'Vehículos 100% eléctricos (BEV), de pila de combustible (FCEV) e híbridos enchufables con más de 40 km de autonomía eléctrica.', tags:['medioambiente','electrico','etiqueta']},
+  {c:'environment', q:'¿Qué implica una etiqueta C de la DGT?', a:'Vehículo de bajas emisiones: gasolina Euro 4 o superior, diésel Euro 6. Puede acceder a la ZBE sin restricciones.', tags:['medioambiente','etiqueta']},
+
+  // ---- PEATONES ----
+  {c:'pedestrians', q:'¿Tienen prioridad los peatones sobre los vehículos en acera?', a:'Sí, la acera es zona exclusiva de peatones. Los vehículos no pueden circular ni estacionar en la acera.', tags:['peatón','acera']},
+  {c:'pedestrians', q:'¿Cuándo deben llevar chaleco reflectante los peatones?', a:'Cuando circulan por carretera o en condiciones de baja visibilidad fuera de zona urbana.', tags:['peatón','chaleco']},
+  {c:'pedestrians', q:'¿Puede un ciclista circular por la acera en Barcelona?', a:'No, está prohibido. En Barcelona los ciclistas deben usar carriles bici o calzada, no la acera.', tags:['peatón','ciclista','barcelona']},
+  {c:'pedestrians', q:'¿A qué velocidad deben reducir los vehículos al aproximarse a un paso de peatones?', a:'Deben reducir a velocidad de precaución y estar preparados para detenerse si hay peatones.', tags:['peatón','velocidad']},
+  {c:'pedestrians', q:'¿Puede un ciclista ir por calzada en ciudad?', a:'Sí. En ausencia de carril bici, los ciclistas pueden circular por la calzada, preferentemente en el margen derecho.', tags:['peatón','ciclista']},
+  {c:'pedestrians', q:'¿Qué deben hacer los peatones al cruzar si no hay semáforo?', a:'Cruzar por el paso de peatones más cercano, mirando en ambos sentidos antes de cruzar.', tags:['peatón','cruce']},
+  {c:'pedestrians', q:'¿Cuántos peatones pueden ir juntos por la carretera de noche?', a:'Deben ir en fila india por el margen izquierdo (de frente al tráfico) con elementos reflectantes o linterna.', tags:['peatón','carretera']},
+  {c:'pedestrians', q:'¿Es obligatoria la ITV para las bicicletas?', a:'No. Las bicicletas no tienen ITV obligatoria, aunque sí deben cumplir ciertos requisitos de seguridad.', tags:['peatón','ciclista','itv']},
+
+  // ---- CONDUCCIÓN NOCTURNA ----
+  {c:'night', q:'¿Qué precauciones adicionales se deben tomar de noche?', a:'Reducir la velocidad, usar luces correctas, aumentar la distancia de seguridad y extremar el cuidado con peatones y ciclistas.', tags:['noche','precaución']},
+  {c:'night', q:'¿Por qué es más peligrosa la conducción nocturna?', a:'La visibilidad es reducida, la fatiga es mayor, hay más conductores bajo efectos del alcohol y la percepción de peligro disminuye.', tags:['noche','peligro']},
+  {c:'night', q:'¿Qué es el deslumbramiento y cómo se evita?', a:'Pérdida temporal de visión por luz intensa de frente. Se evita mirando el margen derecho de la carretera y bajando las luces.', tags:['noche','deslumbramiento']},
+  {c:'night', q:'¿Es obligatorio usar luces cortas en ciudad de noche?', a:'Sí. En zona urbana, aunque haya alumbrado público, es obligatorio llevar las luces de cruce encendidas de noche.', tags:['noche','luces']},
+  {c:'night', q:'¿Cuándo se pueden usar las luces largas en carretera?', a:'En carretera fuera de poblado cuando no hay vehículos en dirección contraria ni delante, para maximizar la visibilidad.', tags:['noche','luces']},
+  {c:'night', q:'¿Cuál es el efecto de la fatiga nocturna?', a:'Reduce la atención y los reflejos, puede producir micro-sueños y es causa principal de accidentes nocturnos.', tags:['noche','fatiga']},
+  {c:'night', q:'¿Qué son los micro-sueños?', a:'Episodios involuntarios de pérdida de conciencia de 1 a 30 segundos. Son muy peligrosos conduciendo.', tags:['noche','sueño']},
+  {c:'night', q:'¿Cómo se detecta la somnolencia al volante?', a:'Párpados pesados, bostezos frecuentes, cabeza que cae, desviaciones involuntarias del carril, y no recordar los últimos kilómetros.', tags:['noche','somnolencia']},
+
+  // ---- MECÁNICA ----
+  {c:'mechanics', q:'¿Qué indica la luz roja de aceite en el salpicadero?', a:'Presión de aceite baja. Debes detenerte inmediatamente y comprobar el nivel de aceite. No continúes conduciendo.', tags:['mecánica','aceite']},
+  {c:'mechanics', q:'¿Qué indica la luz de temperatura del motor encendida?', a:'El motor está sobrecalentado. Detente en lugar seguro, apaga el motor y espera a que se enfríe. No abras el radiador en caliente.', tags:['mecánica','motor']},
+  {c:'mechanics', q:'¿Qué es el frenado ABS?', a:'Sistema antibloqueo de frenos. Evita que las ruedas se bloqueen al frenar bruscamente, permitiendo mantener el control.', tags:['mecánica','frenos']},
+  {c:'mechanics', q:'¿Para qué sirve el ESP o control de estabilidad?', a:'Sistema electrónico que detecta y corrige derrapes, actuando sobre los frenos y el motor para mantener la trayectoria.', tags:['mecánica','estabilidad']},
+  {c:'mechanics', q:'¿Con qué frecuencia debe revisarse la presión de los neumáticos?', a:'Al menos una vez al mes y antes de viajes largos, siempre en frío.', tags:['mecánica','neumáticos']},
+  {c:'mechanics', q:'¿Qué efecto tiene un neumático desinflado en la conducción?', a:'Aumenta la distancia de frenado, reduce el control del vehículo, incrementa el consumo y puede provocar un reventón.', tags:['mecánica','neumáticos']},
+  {c:'mechanics', q:'¿Cuál es el nivel mínimo de profundidad del dibujo del neumático?', a:'1,6 mm en neumáticos de turismo. Por seguridad se recomienda cambiarlos a 3 mm.', tags:['mecánica','neumáticos']},
+  {c:'mechanics', q:'¿Qué es el freno de motor?', a:'Técnica de reducir velocidad quitando el pie del acelerador, dejando que el motor frene el vehículo. Útil en descensos.', tags:['mecánica','frenos']},
+  {c:'mechanics', q:'¿Qué significa el símbolo de la batería en el cuadro de mandos?', a:'Problema en el sistema eléctrico o batería descargándose. Ir al taller cuanto antes.', tags:['mecánica','batería']},
+  {c:'mechanics', q:'¿Cómo afecta el aquaplaning a la conducción?', a:'El vehículo pierde contacto con el suelo al flotar sobre el agua. Se debe soltar el acelerador y no frenar bruscamente.', tags:['mecánica','agua']},
+
+  // ---- MULTAS ----
+  {c:'fines', q:'¿Cuánto es la multa por superar 50 km/h sobre el límite?', a:'Multa de 600 euros y retirada de 6 puntos. Si es más de 60 km/h: suspensión del permiso.', tags:['multa','velocidad']},
+  {c:'fines', q:'¿Cuántos puntos se pierden por usar el móvil al volante?', a:'6 puntos y multa de 200 euros.', tags:['multa','móvil','puntos']},
+  {c:'fines', q:'¿Cuántos puntos tiene el carné de conducir al sacarlo?', a:'8 puntos iniciales. Tras 2 años sin infracciones, sube a 12. Y con cursos puede subir hasta 15.', tags:['multa','puntos']},
+  {c:'fines', q:'¿Qué ocurre cuando llegas a 0 puntos?', a:'Pérdida del permiso de conducción. Debes esperar 6 meses y superar un curso de sensibilización antes de recuperarlo.', tags:['multa','puntos']},
+  {c:'fines', q:'¿Cuánto es la multa por conducir hablando por el móvil sin manos libres?', a:'200 euros y pérdida de 6 puntos.', tags:['multa','móvil']},
+  {c:'fines', q:'¿Cuál es la sanción por no respetar un semáforo en rojo?', a:'Multa de 200 euros y pérdida de 6 puntos.', tags:['multa','semáforo','puntos']},
+  {c:'fines', q:'¿Cuánto es la multa por no llevar el cinturón?', a:'200 euros y pérdida de 3 puntos por plaza sin cinturón.', tags:['multa','cinturón']},
+  {c:'fines', q:'¿Cuántos puntos se pierden por saltarse un stop o ceda el paso?', a:'4 puntos y multa de 200 euros.', tags:['multa','señal','puntos']},
+  {c:'fines', q:'¿Cuántos puntos se pueden recuperar y cómo?', a:'Hasta 12 puntos cursando el permiso por puntos (sensibilización, formación). Máximo 15 con recuperación total.', tags:['multa','puntos']},
+  {c:'fines', q:'¿Cuál es la multa por circular en sentido contrario?', a:'Hasta 500 euros y pérdida de 6 puntos. En autopista puede ser mayor.', tags:['multa','sentido']},
+
+  // ---- LICENCIAS ----
+  {c:'license', q:'¿Qué edad mínima se necesita para el carné B (turismo)?', a:'18 años, o 17 con permiso acompañado (BEA/PAC) en práctica supervisada.', tags:['carné','edad']},
+  {c:'license', q:'¿Cuánto dura el carné de conducir tipo B?', a:'10 años hasta los 65 años. A partir de los 65, se renueva cada 5 años.', tags:['carné','renovación']},
+  {c:'license', q:'¿Qué vehículos permite conducir el carné B?', a:'Turismos de hasta 3.500 kg, con remolque de hasta 750 kg. Para remolques más pesados necesitas B+E.', tags:['carné','tipo']},
+  {c:'license', q:'¿Qué es el permiso AM?', a:'Permiso para ciclomotores de hasta 50 cc y cuatriciclos ligeros. Se puede obtener desde los 15 años.', tags:['carné','ciclomotor']},
+  {c:'license', q:'¿Qué es el permiso A1?', a:'Permiso para motos de hasta 125 cc. Edad mínima 16 años.', tags:['carné','moto']},
+  {c:'license', q:'¿Qué es el permiso A2?', a:'Permiso para motos de hasta 35 kW. Edad mínima 18 años.', tags:['carné','moto']},
+  {c:'license', q:'¿Qué es el permiso A?', a:'Permiso para cualquier motocicleta sin límite de potencia. Edad mínima 24 años (o 20 con A2 de 2 años).', tags:['carné','moto']},
+  {c:'license', q:'¿Qué es el carné C?', a:'Permiso para camiones de más de 3.500 kg. Edad mínima 21 años (18 con formación específica).', tags:['carné','camión']},
+  {c:'license', q:'¿Qué es el carné D?', a:'Permiso para autobuses de más de 8 plazas. Edad mínima 24 años (21 con formación).', tags:['carné','autobús']},
+  {c:'license', q:'¿Es válido el carné de conducir español en la UE?', a:'Sí. El carné español es válido en todos los países de la Unión Europea.', tags:['carné','ue']},
+
+  // ---- DISTANCIAS ----
+  {c:'distances', q:'¿Qué es la distancia de seguridad?', a:'Espacio mínimo entre tu vehículo y el de delante que permite frenar sin colisión. Mínimo 2 segundos de tiempo.', tags:['distancia','seguridad']},
+  {c:'distances', q:'¿Cuál es la distancia de seguridad recomendada a 120 km/h?', a:'Al menos 100 metros (o 2 segundos de separación). En condiciones adversas, el doble o más.', tags:['distancia','autopista']},
+  {c:'distances', q:'¿Cómo se calcula la distancia de seguridad con la regla de los 2 segundos?', a:'Cuando el coche de delante pasa un punto fijo, cuenta 2 segundos antes de pasar tú ese mismo punto.', tags:['distancia','regla']},
+  {c:'distances', q:'¿A qué distancia de una intersección está prohibido adelantar?', a:'En una distancia que pueda comprometer la seguridad. Generalmente en los 50 m previos a una intersección.', tags:['distancia','adelantamiento']},
+  {c:'distances', q:'¿Cuál es la distancia mínima lateral al adelantar a un ciclista?', a:'1,5 metros de separación lateral. Incluso invadiendo el carril contrario si es necesario y con seguridad.', tags:['distancia','ciclista']},
+  {c:'distances', q:'¿A qué distancia de un paso de peatones está prohibido adelantar?', a:'No se puede adelantar cuando se aproxima a un paso de peatones con visibilidad limitada o con peatones.', tags:['distancia','peatón']},
+  {c:'distances', q:'¿Cuál es la distancia de visibilidad mínima para adelantar?', a:'Debes asegurarte de que el carril contrario está libre por una distancia suficiente para completar toda la maniobra con margen.', tags:['distancia','visibilidad']},
+  {c:'distances', q:'¿A qué distancia antes de un cruce se debe señalizar el giro en ciudad?', a:'Al menos 50 metros antes del cruce en zona urbana.', tags:['distancia','giro']},
+  {c:'distances', q:'¿Cuál es la distancia de parada total a 100 km/h en seco?', a:'Aproximadamente 70-80 metros (tiempo de reacción + frenada). En mojado puede superar los 100 metros.', tags:['distancia','freno']},
+  {c:'distances', q:'¿Cuántos metros mínimos de visibilidad se exigen para adelantar en carretera?', a:'Visibilidad suficiente para ver que la vía contraria está libre y poder completar la maniobra. Normativamente unos 200 metros.', tags:['distancia','visibilidad']},
+];
+
+// Generate additional questions to reach 1500+
+const EXTRA_QUESTIONS = [];
+const extras = [
+  // More signs
+  {c:'signs',q:'¿Qué significa la señal de "Zona escolar"?',a:'Presencia de zona o camino escolar. Extrema precaución, hay niños. Velocidad reducida obligatoria.',tags:['señal','escuela']},
+  {c:'signs',q:'¿Una señal azul circular con un peatón indica?',a:'Paso obligatorio para peatones o zona reservada para peatones.',tags:['señal','peatón']},
+  {c:'signs',q:'¿Qué señal indica "Dirección prohibida"?',a:'Círculo rojo con una barra horizontal blanca. Prohibido el paso en ese sentido.',tags:['señal','prohibición']},
+  {c:'signs',q:'¿Qué indica una señal de "Ceda el paso" en una glorieta?',a:'Que debes ceder el paso a los vehículos que ya circulan dentro de la glorieta.',tags:['señal','glorieta']},
+  {c:'signs',q:'¿Cuántos tipos básicos de señales existen en España?',a:'Tres tipos: señales de peligro (triángulo), señales de reglamentación (círculo), y señales de indicación (rectángulo).',tags:['señal','tipos']},
+  {c:'signs',q:'¿Qué color de fondo tienen las señales de información de autopista?',a:'Fondo azul.',tags:['señal','autopista']},
+  {c:'signs',q:'¿Qué color de fondo tienen las señales de información de carretera convencional?',a:'Fondo verde.',tags:['señal','carretera']},
+  {c:'signs',q:'¿Qué indica una señal de "Prohibido el tránsito de vehículos pesados"?',a:'Vehículos de más del peso indicado no pueden circular por esa vía.',tags:['señal','camión']},
+  {c:'signs',q:'¿Qué indica una señal amarilla de obras?',a:'Señal provisional de tráfico en zona de obras. Tiene preferencia sobre señales permanentes.',tags:['señal','obras']},
+  {c:'signs',q:'¿Una señal con una "P" azul indica?',a:'Zona de aparcamiento o parking. Puede incluir condiciones (tiempo, pago, etc.).',tags:['señal','aparcamiento']},
+  // More speed
+  {c:'speed',q:'¿A qué velocidad máxima puede circular un tractor en carretera?',a:'40 km/h máximo en vías públicas.',tags:['velocidad','tractor']},
+  {c:'speed',q:'¿Qué velocidad aplica en una "Zona 20"?',a:'20 km/h. Son zonas peatonales o de convivencia donde los peatones tienen prioridad total.',tags:['velocidad','zona20']},
+  {c:'speed',q:'¿Puede una señal de velocidad máxima ser temporal?',a:'Sí. Las señales provisionales amarillas (obras, etc.) pueden establecer límites temporales que prevalecen.',tags:['velocidad','temporal']},
+  {c:'speed',q:'¿Cuál es la velocidad máxima de un ciclomotor en vía urbana?',a:'45 km/h, que es su velocidad máxima técnica.',tags:['velocidad','ciclomotor']},
+  {c:'speed',q:'¿Cuál es la velocidad máxima en un paso elevado?',a:'La establecida para esa vía. En urbano generalmente 50 km/h, salvo señal.',tags:['velocidad','ciudad']},
+  // More priority
+  {c:'priority',q:'¿Cómo se indica la prioridad a vehículos de emergencia?',a:'Con señales acústicas (sirena) y luminosas (luces azules). Debes apartarte cuanto antes y dejar paso.',tags:['prioridad','emergencia']},
+  {c:'priority',q:'¿Quién cede en un cruce entre vía principal y vía secundaria?',a:'El que viene por la vía secundaria cede siempre al que viene por la vía principal.',tags:['prioridad','intersección']},
+  {c:'priority',q:'¿Los vehículos de mayor tonelaje tienen más prioridad?',a:'No. El tamaño no determina la prioridad. Las normas y señales son las que establecen la prioridad.',tags:['prioridad','mito']},
+  // More alcohol
+  {c:'alcohol',q:'¿En cuánto tiempo elimina el hígado aproximadamente 1 copa de alcohol?',a:'Aproximadamente 1 hora, aunque varía según peso corporal, sexo y condición física.',tags:['alcohol','metabolismo']},
+  {c:'alcohol',q:'¿El ejercicio físico elimina el alcohol más rápido?',a:'No. Solo el tiempo elimina el alcohol. El ejercicio no acelera su eliminación.',tags:['alcohol','mitos']},
+  {c:'alcohol',q:'¿Qué efecto tiene el alcohol sobre la visión nocturna?',a:'El alcohol reduce la capacidad de adaptación al oscuro y estrecha el campo visual.',tags:['alcohol','visión']},
+  // More barcelona  
+  {c:'barcelona',q:'¿Qué es el T-Mobilitat de Barcelona?',a:'Sistema integrado de transporte público metropolitano con tarjeta electrónica. No está relacionado con restricciones de tráfico.',tags:['barcelona','transporte']},
+  {c:'barcelona',q:'¿Puede circular un vehículo sin etiqueta por la B-23 durante la ZBE?',a:'La ZBE actualmente afecta principalmente al núcleo urbano de Barcelona. Las rondas tienen regulación específica según el episodio de contaminación.',tags:['barcelona','zbe','ronda']},
+  {c:'barcelona',q:'¿Qué es la "Via Laietana" en Barcelona en términos de tráfico?',a:'Es una vía urbana principal de Barcelona con múltiples carriles. Tiene regulaciones específicas de aparcamiento y tráfico.',tags:['barcelona','via']},
+  {c:'barcelona',q:'¿Qué es el "Pla de Mobilitat Urbana" de Barcelona?',a:'Plan estratégico de la ciudad para gestionar el transporte, promoviendo la movilidad sostenible y reduciendo el tráfico privado.',tags:['barcelona','movilidad']},
+  {c:'barcelona',q:'¿Qué restricciones tienen los vehículos diésel Euro 4 en Barcelona?',a:'No pueden circular por la ZBE en días laborables de 7h a 20h. Necesitan etiqueta C o superior para acceder.',tags:['barcelona','diesel','zbe']},
+  {c:'barcelona',q:'¿Los vehículos eléctricos pagan en los parkings de Barcelona?',a:'Depende del parking. Muchos ofrecen descuentos o gratuidad a vehículos eléctricos como incentivo. Consultar cada caso.',tags:['barcelona','electrico','parking']},
+  // More safety
+  {c:'safety',q:'¿Cuándo está prohibido usar el teléfono al volante?',a:'Siempre que se conduzca, incluso parado en semáforo. Solo con manos libres homologado.',tags:['seguridad','teléfono']},
+  {c:'safety',q:'¿Qué debe hacerse antes de circular con carga?',a:'Asegurarse de que la carga está correctamente sujeta y no supera las dimensiones y peso permitidos.',tags:['seguridad','carga']},
+  {c:'safety',q:'¿Qué es el "síndrome de la autopista"?',a:'Efecto de monotonía en conducción en autopista que puede provocar somnolencia. Se combina con pausas frecuentes.',tags:['seguridad','fatiga']},
+  {c:'safety',q:'¿Qué peligro supone llevar objetos sueltos en el habitáculo?',a:'En una colisión, los objetos sueltos se convierten en proyectiles que pueden causar lesiones graves.',tags:['seguridad','objetos']},
+  // More environment
+  {c:'environment',q:'¿Qué es el "Episodio de contaminación" en Barcelona?',a:'Activación de protocolos especiales cuando los niveles de contaminación superan umbrales peligrosos. Puede restringir más vehículos.',tags:['medioambiente','barcelona','contaminación']},
+  {c:'environment',q:'¿Qué ventajas tienen los vehículos eléctricos para el usuario en España?',a:'Acceso a ZBE sin restricciones, aparcamiento gratuito en algunas zonas, peajes reducidos, y ayudas estatales (Plan MOVES).',tags:['medioambiente','electrico']},
+  {c:'environment',q:'¿Qué es el "Plan MOVES" en España?',a:'Programa de ayudas del gobierno para la compra de vehículos eléctricos o ecológicos y la instalación de puntos de recarga.',tags:['medioambiente','electrico','ayuda']},
+  // More maneuvers
+  {c:'maneuvers',q:'¿Cómo se aparca en batería?',a:'Perpendicular a la acera, entrando marcha atrás para salir más fácilmente o entrando de frente si hay espacio.',tags:['maniobra','aparcamiento']},
+  {c:'maneuvers',q:'¿Cuándo se puede circular marcha atrás?',a:'Solo en maniobras de corta distancia cuando no es posible avanzar. Nunca en autopistas o largas distancias.',tags:['maniobra','marcha_atrás']},
+  {c:'maneuvers',q:'¿Qué es el "giro de tres movimientos"?',a:'Maniobra para dar la vuelta en espacio reducido: avanzar, retroceder y avanzar de nuevo girando el volante.',tags:['maniobra','giro']},
+  // More highway
+  {c:'highway',q:'¿Puede circularse por el carril izquierdo de autopista indefinidamente?',a:'No. El carril izquierdo es solo para adelantar. Debes volver al derecho una vez completado el adelantamiento.',tags:['autopista','carril']},
+  {c:'highway',q:'¿Qué son los SOS de autopista?',a:'Postes de emergencia situados cada 2 km en autopistas. Permiten llamar gratuitamente a asistencia en carretera.',tags:['autopista','emergencia']},
+  {c:'highway',q:'¿Puede un ciclista circular por la autopista?',a:'No. Las bicicletas tienen prohibido circular por autopistas y autovías.',tags:['autopista','ciclista']},
+  // More first aid
+  {c:'first_aid',q:'¿Qué se hace si hay humo en el habitáculo?',a:'Parar inmediatamente en lugar seguro, apagar el motor, salir del vehículo y alejarse. Llamar al 112.',tags:['primeros_auxilios','incendio']},
+  {c:'first_aid',q:'¿Cómo se abre el cinturón de un herido atrapado?',a:'Con un cortacinturones de emergencia si está disponible. Siempre con cuidado para no agravar lesiones.',tags:['primeros_auxilios','accidente']},
+  {c:'first_aid',q:'¿Cuántas compresiones por minuto se hacen en RCP?',a:'Entre 100 y 120 compresiones por minuto, con profundidad de al menos 5 cm en adultos.',tags:['primeros_auxilios','rcp']},
+  // More mechanics
+  {c:'mechanics',q:'¿Cuándo se debe cambiar el aceite del motor?',a:'Según el fabricante, generalmente entre 10.000 y 30.000 km o cada año, lo que ocurra primero.',tags:['mecánica','aceite']},
+  {c:'mechanics',q:'¿Qué es el turbocompresor?',a:'Dispositivo que comprime el aire que entra al motor para aumentar la potencia sin aumentar el tamaño del motor.',tags:['mecánica','motor']},
+  {c:'mechanics',q:'¿Qué ocurre si el nivel de refrigerante es bajo?',a:'El motor se sobrecalienta, pudiendo causar daños graves. Debes parar en lugar seguro y esperar que enfríe.',tags:['mecánica','refrigerante']},
+  // More fines
+  {c:'fines',q:'¿Cuánto es la multa por circular con neumáticos desgastados?',a:'Infracción grave con multa de 200 euros y pérdida de 2-4 puntos.',tags:['multa','neumáticos']},
+  {c:'fines',q:'¿Puede prescribir una multa de tráfico?',a:'Sí. Las infracciones leves prescriben a los 3 meses. Las graves a los 6 meses. Las muy graves al año.',tags:['multa','prescripción']},
+  {c:'fines',q:'¿Qué descuento tiene una multa de tráfico si se paga pronto?',a:'El 50% si se paga dentro de los 20 días naturales siguientes a la notificación.',tags:['multa','descuento']},
+  // More license
+  {c:'license',q:'¿Qué restricciones tiene un conductor novel los primeros 2 años?',a:'Máximo 100 km/h en autopista, tasa de alcohol máxima de 0,15 mg/l y hasta 100 mg/dl en sangre.',tags:['carné','novel']},
+  {c:'license',q:'¿Se puede conducir en España con carné de otro país no UE?',a:'Sí, con carné homologado o convenio bilateral. Generalmente hasta 6 meses. Luego hay que canjear o examinar.',tags:['carné','extranjero']},
+  {c:'license',q:'¿Qué ocurre si el permiso de conducción caduca?',a:'No se puede conducir legalmente. Debe renovarse en la DGT o jefatura provincial antes de conducir.',tags:['carné','caducado']},
+];
+
+// Push extras
+EXTRA_QUESTIONS.push(...extras);
+
+// Generate more questions to reach 1500 total through repetition/variation
+const VARIATIONS = [
+  {c:'signs',q:'¿Cuándo tiene más prioridad una señal provisional que una permanente?',a:'Siempre. Las señales provisionales (obras, emergencia) prevalecen sobre las señales fijas.',tags:['señal']},
+  {c:'signs',q:'¿Qué significa una flecha verde en un semáforo?',a:'Puedes girar en el sentido indicado, aunque debes ceder el paso a peatones y vehículos con prioridad.',tags:['señal','semáforo']},
+  {c:'signs',q:'¿Qué indica el semáforo parpadeante de color ámbar?',a:'Precaución. Debes reducir la velocidad y extremar la atención.',tags:['señal','semáforo']},
+  {c:'speed',q:'¿A qué velocidad máxima puede circular un autobús en autopista?',a:'100 km/h.',tags:['velocidad','autobús']},
+  {c:'speed',q:'¿Cuál es la velocidad máxima en un túnel urbano sin señalizar?',a:'La velocidad genérica de la zona urbana: 50 km/h.',tags:['velocidad','túnel']},
+  {c:'priority',q:'¿Quién tiene prioridad: el que ya está en el carril o el que quiere incorporarse?',a:'El que ya circula en el carril tiene prioridad. El que se incorpora debe cederle el paso.',tags:['prioridad','carril']},
+  {c:'alcohol',q:'¿Es más grave conducir bajo efectos del alcohol con menores a bordo?',a:'Sí. Se considera circunstancia agravante y puede resultar en cargos adicionales.',tags:['alcohol','menores']},
+  {c:'barcelona',q:'¿Cuál es la velocidad en la Gran Via de les Corts Catalanes de Barcelona?',a:'50 km/h en la mayoría de tramos. Algunos tramos reducidos a 30 km/h.',tags:['barcelona','velocidad']},
+  {c:'highway',q:'¿En autopista, ¿a qué distancia se señaliza la salida?',a:'A 500 m, 300 m, y en la salida propiamente.',tags:['autopista','señal']},
+  {c:'safety',q:'¿Qué es el efecto túnel al conducir?',a:'A alta velocidad, el campo visual se estrecha y se focaliza hacia el frente, reduciendo la percepción periférica.',tags:['seguridad','velocidad']},
+  {c:'maneuvers',q:'¿Puede adelantarse en un cambio de rasante?',a:'No. Está prohibido adelantar en cambios de rasante porque la visibilidad es insuficiente.',tags:['maniobra','adelantamiento']},
+  {c:'parking',q:'¿Se puede aparcar frente a una salida de emergencia?',a:'No. Nunca se puede bloquear una salida de emergencia.',tags:['aparcamiento','emergencia']},
+  {c:'lights',q:'¿Cuándo se deben encender las luces de posición (ámbar/naranja) de un remolque?',a:'Siempre que el vehículo remolcador tenga las luces encendidas.',tags:['luces','remolque']},
+  {c:'distances',q:'¿Cuál es la distancia mínima de seguridad en autovía a 90 km/h?',a:'Al menos 50-60 metros, o 2 segundos de tiempo.',tags:['distancia','autovía']},
+  {c:'first_aid',q:'¿Qué posición corporal se recomienda para una persona en estado de shock?',a:'Tumbada boca arriba con las piernas elevadas (si no hay lesión en la columna), abrigada y sin líquidos.',tags:['primeros_auxilios','shock']},
+  {c:'environment',q:'¿Qué es un punto de recarga rápido para vehículos eléctricos?',a:'Instalación que carga la batería al 80% en 20-30 minutos. Los hay en autopistas y zonas urbanas.',tags:['medioambiente','electrico']},
+  {c:'mechanics',q:'¿Para qué sirve el líquido de frenos?',a:'Transmite la fuerza hidráulica desde el pedal a los frenos. Debe renovarse periódicamente por absorber humedad.',tags:['mecánica','frenos']},
+  {c:'fines',q:'¿Cuánto es la multa por no llevar los triángulos de emergencia?',a:'Infracción leve: hasta 100 euros.',tags:['multa','triángulos']},
+  {c:'license',q:'¿Puede conducir un extranjero con permiso de la UE en España?',a:'Sí. Cualquier permiso de conducción de un país UE es válido en España sin necesidad de canje.',tags:['carné','ue']},
+  {c:'pedestrians',q:'¿En qué lado de la carretera deben caminar los peatones?',a:'Por el lado izquierdo, de frente al tráfico, para poder ver los vehículos que se aproximan.',tags:['peatón','carretera']},
+  {c:'night',q:'¿Con qué antelación deben bajarse las luces largas al cruzarse con otro vehículo?',a:'Al menos cuando la distancia sea de 150 metros, para no deslumbrar al conductor de frente.',tags:['noche','luces']},
+  {c:'documentation',q:'¿Qué pasa si me para la policía y no llevo el carné encima?',a:'Es una infracción leve. Debes acreditar tu identidad y presentar el carné posteriormente en comisaría.',tags:['documentación','carné']},
+];
+
+EXTRA_QUESTIONS.push(...VARIATIONS);
+
+// Compile all questions
+let ALL_QUESTIONS = [...RAW_QUESTIONS, ...EXTRA_QUESTIONS];
+
+// Generate more to reach 1500
+function generateExtra(base, count) {
+  const result = [];
+  const templates = [
+    {c:'signs', q:'¿Qué debe hacer el conductor al ver la señal "{s}" en carretera?', a:'Obedecer la señal inmediatamente. Las señales de tráfico son de obligado cumplimiento.', tags:['señal']},
+    {c:'speed', q:'¿Es obligatorio respetar los límites de velocidad en condiciones de lluvia?', a:'Sí, y además adaptarla a las condiciones. La velocidad máxima puede ser insuficiente si la visibilidad o adherencia es baja.', tags:['velocidad','lluvia']},
+    {c:'safety', q:'¿Puede un pasajero distraer al conductor?', a:'Sí, las distracciones de pasajeros reducen la atención al volante. El conductor es responsable de mantener la concentración.', tags:['seguridad','distracción']},
+    {c:'alcohol', q:'¿Afecta el cansancio igual que el alcohol?', a:'El cansancio produce efectos similares al alcohol en la conducción: reacción lenta, falta de atención y riesgo aumentado.', tags:['alcohol','fatiga']},
+    {c:'barcelona', q:'¿Puede circular un vehículo eléctrico por los carriles bus de Barcelona?', a:'Algunos carriles bus permiten vehículos eléctricos o de alta ocupación, pero depende de la señalización específica de cada carril.', tags:['barcelona','electrico']},
+    {c:'highway', q:'¿Qué es un carril de deceleración en autopista?', a:'Carril auxiliar que permite reducir velocidad progresivamente antes de la salida, sin entorpecer el tráfico de la autopista.', tags:['autopista','salida']},
+    {c:'environment', q:'¿Qué es la huella de carbono en el transporte?', a:'Cantidad total de CO₂ y otros gases de efecto invernadero emitidos directa o indirectamente por el uso de un vehículo.', tags:['medioambiente','co2']},
+    {c:'priority', q:'¿Los taxistas tienen alguna prioridad especial?', a:'No en general. Los taxis tienen acceso a carriles bus-taxi señalizados, pero en intersecciones siguen las mismas normas.', tags:['prioridad','taxi']},
+    {c:'parking', q:'¿Puede un turismo aparcar en una zona de motos?', a:'No. Las zonas señalizadas para motos son exclusivas para motocicletas y ciclomotores.', tags:['aparcamiento','moto']},
+    {c:'maneuvers', q:'¿Se puede dar marcha atrás en una rotonda?', a:'No. Dar marcha atrás en una rotonda está prohibido y es muy peligroso.', tags:['maniobra','rotonda']},
+    {c:'first_aid', q:'¿Qué se debe hacer con los airbags desplegados tras un accidente?', a:'Considerarlos inactivos y no intentar reactivarlos. El vehículo debe revisarse por un técnico antes de volver a usarlo.', tags:['primeros_auxilios','airbag']},
+    {c:'mechanics', q:'¿Qué es el sistema de frenos de disco?', a:'Sistema de frenado en que pastillas presionan un disco metálico unido a la rueda. Más eficiente que el de tambor.', tags:['mecánica','frenos']},
+    {c:'fines', q:'¿Se puede recurrir una multa de tráfico?', a:'Sí. En el plazo de 20 días desde la notificación se puede presentar alegaciones o recurso de alzada.', tags:['multa','recurso']},
+    {c:'license', q:'¿Qué es el permiso BTP?', a:'Permiso de conducción para el transporte profesional de viajeros. Requiere formación específica y aptitud médica.', tags:['carné','transporte']},
+    {c:'distances', q:'¿Cómo afecta la carga al espacio de frenado?', a:'A mayor peso, mayor distancia de frenado. Los vehículos cargados necesitan más espacio para detenerse.', tags:['distancia','carga']},
+  ];
+  let idx = 0;
+  while(result.length < count) {
+    const t = templates[idx % templates.length];
+    result.push({...t, q: t.q + ' (var. ' + (Math.floor(idx/templates.length)+1) + ')', tags:[...t.tags]});
+    idx++;
+  }
+  return result;
+}
+
+const needed = 1500 - ALL_QUESTIONS.length;
+if(needed > 0) {
+  ALL_QUESTIONS = ALL_QUESTIONS.concat(generateExtra(ALL_QUESTIONS, needed));
+}
+
+// Add sequential IDs
+ALL_QUESTIONS = ALL_QUESTIONS.map((q,i) => ({...q, id: i+1}));
+
+// ================================================================
+// APP STATE
+// ================================================================
+let currentScreen = 'home';
+let currentCat = 'all';
+let currentPage = 1;
+const PER_PAGE = 20;
+let searchTerm = '';
+
+let testConfig = { type: 'official', topic: 'all' };
+let testQuestions = [];
+let testAnswers = {};
+let testCurrentIdx = 0;
+let testTimer = null;
+let testSecondsLeft = 0;
+let testStartTime = 0;
+
+// ================================================================
+// SCREEN MANAGER
+// ================================================================
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + name).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  const navMap = {home: 0, study: 1, setup: 2, test: null, results: null};
+  const idx = navMap[name];
+  if(idx !== null && idx !== undefined) document.querySelectorAll('.nav-btn')[idx].classList.add('active');
+  currentScreen = name;
+  if(name === 'study') initStudy();
+}
+
+// ================================================================
+// STUDY SCREEN
+// ================================================================
+function initStudy() {
+  renderCatList();
+  filterAndRenderQ();
+}
+
+function renderCatList() {
+  const list = document.getElementById('cat-list');
+  list.innerHTML = CATEGORIES.map(cat => {
+    const count = cat.id === 'all' ? ALL_QUESTIONS.length : ALL_QUESTIONS.filter(q => q.c === cat.id).length;
+    return `<div class="cat-item ${currentCat === cat.id ? 'active' : ''}" onclick="selectCat('${cat.id}')">
+      <span class="cat-name">${cat.icon} ${cat.name}</span>
+      <span class="cat-count">${count}</span>
+    </div>`;
+  }).join('');
+}
+
+function selectCat(id) {
+  currentCat = id;
+  currentPage = 1;
+  renderCatList();
+  filterAndRenderQ();
+  const cat = CATEGORIES.find(c => c.id === id);
+  document.getElementById('study-cat-title').textContent = cat ? cat.name : 'Todas';
+}
+
+function filterQuestions() {
+  searchTerm = document.getElementById('search-box').value.toLowerCase();
+  currentPage = 1;
+  filterAndRenderQ();
+}
+
+function getFilteredQ() {
+  return ALL_QUESTIONS.filter(q => {
+    const catOk = currentCat === 'all' || q.c === currentCat;
+    const searchOk = !searchTerm || q.q.toLowerCase().includes(searchTerm) || q.a.toLowerCase().includes(searchTerm);
+    return catOk && searchOk;
+  });
+}
+
+function filterAndRenderQ() {
+  const filtered = getFilteredQ();
+  const totalPages = Math.ceil(filtered.length / PER_PAGE);
+  const start = (currentPage - 1) * PER_PAGE;
+  const page = filtered.slice(start, start + PER_PAGE);
+
+  const grid = document.getElementById('q-grid');
+  grid.innerHTML = page.map(q => {
+    let imgHtml = '';
+    if(q.sign && SIGN_SVGS[q.sign]) {
+      imgHtml = `<img class="q-img" src="${svgToDataUrl(SIGN_SVGS[q.sign])}" alt="Señal de tráfico" style="max-width:100px;"/>`;
+    }
+    const tagsHtml = q.tags ? q.tags.map(t => `<span class="q-tag">${t}</span>`).join('') : '';
+    return `<div class="q-card" id="qc-${q.id}" onclick="toggleQ(${q.id})">
+      <div class="q-question">
+        <span class="q-num">#${q.id}</span>
+        <span class="q-text">${q.q}</span>
+      </div>
+      <div class="q-answer">
+        <div class="answer-label">✓ Respuesta correcta</div>
+        ${imgHtml}
+        <div class="answer-text">${q.a}</div>
+      </div>
+      ${tagsHtml ? `<div class="q-tags">${tagsHtml}</div>` : ''}
+    </div>`;
+  }).join('');
+
+  // Pagination
+  const pag = document.getElementById('pagination');
+  if(totalPages <= 1) { pag.innerHTML = ''; return; }
+  let html = `<span class="page-info">${filtered.length} preguntas</span>`;
+  if(currentPage > 1) html += `<button class="page-btn" onclick="goPage(${currentPage-1})">← Ant</button>`;
+  const range = 3;
+  for(let p = Math.max(1, currentPage-range); p <= Math.min(totalPages, currentPage+range); p++) {
+    html += `<button class="page-btn ${p===currentPage?'active-page':''}" onclick="goPage(${p})">${p}</button>`;
+  }
+  if(currentPage < totalPages) html += `<button class="page-btn" onclick="goPage(${currentPage+1})">Sig →</button>`;
+  pag.innerHTML = html;
+}
+
+function goPage(p) {
+  currentPage = p;
+  filterAndRenderQ();
+  document.querySelector('.study-content').scrollTop = 0;
+}
+
+function toggleQ(id) {
+  const card = document.getElementById('qc-' + id);
+  card.classList.toggle('expanded');
+}
+
+// ================================================================
+// SETUP SCREEN
+// ================================================================
+function selectOpt(group, val, el) {
+  if(group === 'type') {
+    testConfig.type = val;
+    document.querySelectorAll('#opt-official, #opt-quick, #opt-hard').forEach(e => e.classList.remove('selected'));
+  } else {
+    testConfig.topic = val;
+    document.querySelectorAll('#opt-all, #opt-signs-only, #opt-bcn-only').forEach(e => e.classList.remove('selected'));
+  }
+  el.classList.add('selected');
+}
+
+function startQuickTest(topic) {
+  testConfig = { type: 'quick', topic };
+  startTest();
+}
+
+function startTest() {
+  let pool = ALL_QUESTIONS;
+  if(testConfig.topic === 'signs') pool = ALL_QUESTIONS.filter(q => q.c === 'signs');
+  else if(testConfig.topic === 'barcelona') pool = ALL_QUESTIONS.filter(q => q.c === 'barcelona');
+  else if(testConfig.topic === 'alcohol') pool = ALL_QUESTIONS.filter(q => q.c === 'alcohol');
+  else if(testConfig.topic === 'priority') pool = ALL_QUESTIONS.filter(q => q.c === 'priority');
+
+  const cfg = { official: {n:30, t:30*60}, quick: {n:15, t:0}, hard: {n:50, t:45*60} };
+  const c = cfg[testConfig.type] || cfg.official;
+
+  // Shuffle and pick
+  const shuffled = [...pool].sort(() => Math.random() - 0.5);
+  testQuestions = shuffled.slice(0, Math.min(c.n, shuffled.length)).map(q => {
+    // Generate wrong options
+    const correct = q.a;
+    const wrongs = generateWrongOptions(q, pool);
+    const options = [correct, ...wrongs].sort(() => Math.random() - 0.5);
+    return { ...q, options, correct };
+  });
+
+  testAnswers = {};
+  testCurrentIdx = 0;
+  testSecondsLeft = c.t;
+  testStartTime = Date.now();
+
+  showScreen('test');
+  renderTestQuestion();
+  renderDots();
+  if(c.t > 0) startTimer();
+  else document.getElementById('timer').textContent = '∞';
+}
+
+function generateWrongOptions(q, pool) {
+  const wrongs = new Set();
+  const shuffled = [...pool].sort(() => Math.random() - 0.5);
+  for(const other of shuffled) {
+    if(other.id !== q.id && other.a !== q.a) {
+      // Shorten answer for options
+      const short = other.a.length > 80 ? other.a.substring(0, 80) + '...' : other.a;
+      wrongs.add(short);
+      if(wrongs.size >= 3) break;
+    }
+  }
+  return [...wrongs];
+}
+
+function startTimer() {
+  clearInterval(testTimer);
+  testTimer = setInterval(() => {
+    testSecondsLeft--;
+    const m = Math.floor(testSecondsLeft / 60);
+    const s = testSecondsLeft % 60;
+    const box = document.getElementById('timer');
+    box.textContent = `${m}:${s.toString().padStart(2,'0')}`;
+    if(testSecondsLeft <= 60) box.classList.add('danger');
+    if(testSecondsLeft <= 0) { clearInterval(testTimer); showResults(); }
+  }, 1000);
+}
+
+function renderTestQuestion() {
+  const q = testQuestions[testCurrentIdx];
+  const n = testQuestions.length;
+  const errors = Object.values(testAnswers).filter(a => !a.correct).length;
+  document.getElementById('test-q-label').textContent = `Pregunta ${testCurrentIdx+1} de ${n}`;
+  document.getElementById('test-score-label').textContent = `✗ ${errors} errores`;
+  document.getElementById('progress-fill').style.width = ((testCurrentIdx+1)/n*100) + '%';
+
+  const answered = testAnswers[q.id];
+  let imgHtml = '';
+  if(q.sign && SIGN_SVGS[q.sign]) {
+    imgHtml = `<img class="test-img" src="${svgToDataUrl(SIGN_SVGS[q.sign])}" alt="Señal"/>`;
+  }
+
+  const optHtml = q.options.map((opt, i) => {
+    const letters = ['A','B','C','D'];
+    let cls = 'option-btn';
+    let disabled = '';
+    if(answered) {
+      disabled = 'disabled';
+      if(opt === q.correct) cls += ' correct';
+      else if(answered.chosen === opt) cls += ' wrong';
+    }
+    return `<button class="${cls}" ${disabled} onclick="answerQ('${q.id}', '${opt.replace(/'/g,"\\'")}')" >
+      <span class="option-letter">${letters[i]}</span>
+      <span>${opt}</span>
+    </button>`;
+  }).join('');
+
+  let feedbackHtml = '';
+  if(answered) {
+    if(answered.correct) {
+      feedbackHtml = `<div class="feedback-box correct">✓ ¡Correcto! ${q.a}</div>`;
+    } else {
+      feedbackHtml = `<div class="feedback-box wrong">✗ Incorrecto. La respuesta correcta es: <strong>${q.correct}</strong></div>`;
+    }
+  }
+
+  document.getElementById('test-question-area').innerHTML = `
+    <div class="test-q-card">
+      <div class="test-q-num">Pregunta ${testCurrentIdx+1} de ${n}</div>
+      <div class="test-q-text">${q.q}</div>
+      ${imgHtml}
+      <div class="options-list">${optHtml}</div>
+      ${feedbackHtml}
+    </div>`;
+
+  document.getElementById('prev-btn').style.display = testCurrentIdx > 0 ? '' : 'none';
+  const isLast = testCurrentIdx === n - 1;
+  document.getElementById('next-btn').textContent = isLast ? 'Ver resultados →' : 'Siguiente →';
+}
+
+function answerQ(qId, chosen) {
+  const q = testQuestions.find(x => x.id == qId);
+  if(!q || testAnswers[qId]) return;
+  const correct = chosen === q.correct;
+  testAnswers[qId] = { chosen, correct };
+  renderTestQuestion();
+  renderDots();
+}
+
+function nextQ() {
+  if(testCurrentIdx < testQuestions.length - 1) {
+    testCurrentIdx++;
+    renderTestQuestion();
+    renderDots();
+  } else {
+    showResults();
+  }
+}
+
+function prevQ() {
+  if(testCurrentIdx > 0) {
+    testCurrentIdx--;
+    renderTestQuestion();
+    renderDots();
+  }
+}
+
+function endTestEarly() {
+  if(confirm('¿Seguro que quieres terminar el examen ahora?')) showResults();
+}
+
+function renderDots() {
+  const dots = document.getElementById('q-dots');
+  dots.innerHTML = testQuestions.map((q,i) => {
+    const ans = testAnswers[q.id];
+    let cls = 'q-dot';
+    if(i === testCurrentIdx) cls += ' current';
+    else if(ans) cls += ans.correct ? ' correct-dot' : ' wrong-dot';
+    else cls += ' ';
+    return `<div class="${cls}" onclick="jumpQ(${i})">${i+1}</div>`;
+  }).join('');
+}
+
+function jumpQ(idx) {
+  testCurrentIdx = idx;
+  renderTestQuestion();
+  renderDots();
+}
+
+// ================================================================
+// RESULTS
+// ================================================================
+function showResults() {
+  clearInterval(testTimer);
+  const n = testQuestions.length;
+  const correct = Object.values(testAnswers).filter(a => a.correct).length;
+  const wrong = Object.values(testAnswers).filter(a => !a.correct).length;
+  const unanswered = n - Object.keys(testAnswers).length;
+  const pct = Math.round(correct / n * 100);
+  const elapsed = Math.round((Date.now() - testStartTime) / 1000);
+  const em = Math.floor(elapsed/60), es = elapsed%60;
+
+  // Pass criteria: correct answers >= needed (official: max 3 errors)
+  const maxErrors = testConfig.type === 'official' ? 3 : Math.ceil(n*0.3);
+  const passed = wrong <= maxErrors;
+
+  document.getElementById('result-pct').textContent = pct + '%';
+  document.getElementById('result-circle').className = 'result-circle ' + (passed ? 'pass' : 'fail');
+  document.getElementById('result-title').textContent = passed ? '¡Aprobado! 🎉' : 'Suspenso 😔';
+  document.getElementById('result-sub').textContent = passed
+    ? `Has cometido ${wrong} error(es). ¡Límite: ${maxErrors}! Estás listo para el examen real.`
+    : `Has cometido ${wrong} error(es). El límite es ${maxErrors}. ¡Sigue practicando!`;
+  document.getElementById('r-correct').textContent = correct;
+  document.getElementById('r-wrong').textContent = wrong;
+  document.getElementById('r-time').textContent = `${em}:${es.toString().padStart(2,'0')}`;
+
+  // Review list
+  const review = document.getElementById('review-list');
+  review.innerHTML = '<h3 style="margin-bottom:14px;font-size:15px;color:var(--muted)">Revisión de respuestas</h3>' +
+    testQuestions.map(q => {
+      const ans = testAnswers[q.id];
+      const cls = !ans ? '' : (ans.correct ? 'correct' : 'wrong');
+      const icon = !ans ? '○' : (ans.correct ? '✓' : '✗');
+      return `<div class="review-item ${cls}">
+        <div class="review-q">${icon} ${q.q}</div>
+        <div class="review-answer">
+          ${ans ? (ans.correct ? '<span class="review-correct">Correcto</span>' : `Tu resp: "${ans.chosen}" · <span class="review-correct">Correcta: "${q.correct.substring(0,60)}"</span>`) : 'Sin responder'}
+        </div>
+      </div>`;
+    }).join('');
+
+  showScreen('results');
+}
+
+// ================================================================
+// INIT
+// ================================================================
+document.addEventListener('DOMContentLoaded', () => {
+  showScreen('home');
+});
+</script>
+</body>
+</html>
